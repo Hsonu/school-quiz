@@ -1,0 +1,8 @@
+node_modules/
+.env
+android-app/build/
+android-app/app/build/
+.gradle/
+.idea/
+*.log
+inspect_db_temp.js
