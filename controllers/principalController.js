@@ -5,6 +5,7 @@ const Department = require('../models/Department');
 const Course = require('../models/Course');
 const Semester = require('../models/Semester');
 const Subject = require('../models/Subject');
+const Class = require('../models/Class');
 const Teacher = require('../models/Teacher');
 const Student = require('../models/Student');
 const TeacherSubject = require('../models/TeacherSubject');
