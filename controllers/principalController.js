@@ -267,22 +267,26 @@ exports.getSubjects = async (req, res, next) => {
     const deptIds = [...new Set(subjects.map(s => s.departmentId).filter(Boolean))];
     const courseIds = [...new Set(subjects.map(s => s.courseId).filter(Boolean))];
     const semIds = [...new Set(subjects.map(s => s.semesterId).filter(Boolean))];
+    const classIds = [...new Set(subjects.map(s => s.classId).filter(Boolean))];
 
-    const [depts, courses, sems] = await Promise.all([
+    const [depts, courses, sems, classes] = await Promise.all([
       Department.find({ _id: { $in: deptIds } }),
       Course.find({ _id: { $in: courseIds } }),
-      Semester.find({ _id: { $in: semIds } })
+      Semester.find({ _id: { $in: semIds } }),
+      Class.find({ _id: { $in: classIds } })
     ]);
 
     const deptsMap = new Map(depts.map(d => [String(d._id), d]));
     const coursesMap = new Map(courses.map(c => [String(c._id), c]));
     const semsMap = new Map(sems.map(sem => [String(sem._id), sem]));
+    const classesMap = new Map(classes.map(c => [String(c._id), c]));
 
     const populated = [];
     for (const s of subjects) {
       const dept = deptsMap.get(String(s.departmentId));
       const course = coursesMap.get(String(s.courseId));
       const sem = semsMap.get(String(s.semesterId));
+      const cls = classesMap.get(String(s.classId));
 
       populated.push({
         id: s._id,
@@ -292,7 +296,9 @@ exports.getSubjects = async (req, res, next) => {
         courseId: s.courseId || '',
         courseName: course ? course.name : 'N/A',
         semesterId: s.semesterId || '',
-        semesterName: sem ? sem.name : 'N/A'
+        semesterName: sem ? sem.name : 'N/A',
+        classId: s.classId || '',
+        className: cls ? cls.name : 'N/A'
       });
     }
 
@@ -311,6 +317,9 @@ exports.getSubjects = async (req, res, next) => {
     }
     if (req.query.semesterId) {
       resultData = resultData.filter(item => String(item.semesterId) === String(req.query.semesterId));
+    }
+    if (req.query.classId) {
+      resultData = resultData.filter(item => String(item.classId) === String(req.query.classId));
     }
 
     // Apply Sorting
@@ -337,10 +346,10 @@ exports.getSubjects = async (req, res, next) => {
 
 exports.addSubject = async (req, res, next) => {
   try {
-    const { name, departmentId, courseId, semesterId } = req.body;
+    const { name, departmentId, courseId, semesterId, classId } = req.body;
     if (!name) return sendResponse(res, 400, false, 'Name is required.');
 
-    const subject = await Subject.create({ name, departmentId, courseId, semesterId });
+    const subject = await Subject.create({ name, departmentId, courseId, semesterId, classId });
     return sendResponse(res, 201, true, 'Subject created successfully.', subject);
   } catch (error) {
     next(error);
@@ -350,9 +359,9 @@ exports.addSubject = async (req, res, next) => {
 exports.updateSubject = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, departmentId, courseId, semesterId } = req.body;
+    const { name, departmentId, courseId, semesterId, classId } = req.body;
 
-    const subject = await Subject.findByIdAndUpdate(id, { name, departmentId, courseId, semesterId }, { new: true });
+    const subject = await Subject.findByIdAndUpdate(id, { name, departmentId, courseId, semesterId, classId }, { new: true });
     return sendResponse(res, 200, true, 'Subject updated successfully.', subject);
   } catch (error) {
     next(error);

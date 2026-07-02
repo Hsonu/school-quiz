@@ -363,7 +363,7 @@ const principal = {
       }
 
       // Bind events
-      const filters = ['filter-search', 'filter-dept', 'filter-course', 'filter-sem', 'filter-sort'];
+      const filters = ['filter-search', 'filter-dept', 'filter-course', 'filter-sem', 'filter-class', 'filter-sort'];
       filters.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -380,6 +380,7 @@ const principal = {
     const deptId = document.getElementById('filter-dept')?.value || '';
     const courseId = document.getElementById('filter-course')?.value || '';
     const semId = document.getElementById('filter-sem')?.value || '';
+    const classId = document.getElementById('filter-class')?.value || '';
     const sortVal = document.getElementById('filter-sort')?.value || 'name-asc';
 
     const [sortBy, sortOrder] = sortVal.split('-');
@@ -390,6 +391,7 @@ const principal = {
     if (deptId) params.append('departmentId', deptId);
     if (courseId) params.append('courseId', courseId);
     if (semId) params.append('semesterId', semId);
+    if (classId) params.append('classId', classId);
     if (sortBy) params.append('sortBy', sortBy);
     if (sortOrder) params.append('sortOrder', sortOrder);
 
@@ -398,17 +400,18 @@ const principal = {
       if (res && res.success) {
         const subjects = res.data;
         if (subjects.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-3">No subjects matching your filters.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">No subjects matching your filters.</td></tr>';
           return;
         }
         tbody.innerHTML = subjects.map(s => `
           <tr>
             <td><strong>${s.name}</strong></td>
+            <td><span class="badge bg-secondary">${s.className || 'N/A'}</span></td>
             <td>${s.departmentName}</td>
             <td>${s.courseName}</td>
             <td>${s.semesterName}</td>
             <td class="text-end">
-              <button class="btn btn-sm btn-outline-primary me-1" onclick="principal.openEditSubjectModal('${s.id}', '${s.name}', '${s.departmentId}', '${s.courseId}', '${s.semesterId}')"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-sm btn-outline-primary me-1" onclick="principal.openEditSubjectModal('${s.id}', '${s.name.replace(/'/g, "\\'")}', '${s.departmentId}', '${s.courseId}', '${s.semesterId}', '${s.classId || ''}')"><i class="fas fa-edit"></i></button>
               <button class="btn btn-sm btn-outline-danger" onclick="principal.deleteSubject('${s.id}')"><i class="fas fa-trash-alt"></i></button>
             </td>
           </tr>
@@ -433,14 +436,29 @@ const principal = {
     }
   },
 
+  populateClassDropdown: async (selectId, isFilter = false) => {
+    const select = document.getElementById(selectId);
+    if (!select) return;
+    try {
+      const res = await api.get('/classes');
+      if (res && res.success) {
+        select.innerHTML = (isFilter ? '<option value="">All Classes</option>' : '<option value="">Select Class (Optional)</option>') +
+          res.data.map(cls => `<option value="${cls._id || cls.id}">${cls.name}</option>`).join('');
+      }
+    } catch (err) {
+      console.error('Failed to populate class dropdown:', err);
+    }
+  },
+
   createSubject: async (e) => {
     e.preventDefault();
     const name = document.getElementById('add-subject-name').value.trim();
     const departmentId = document.getElementById('add-subject-dept').value;
     const courseId = document.getElementById('add-subject-course').value;
     const semesterId = document.getElementById('add-subject-sem').value;
+    const classId = document.getElementById('add-subject-class').value;
     try {
-      const res = await api.post('/principal/subjects', { name, departmentId, courseId, semesterId });
+      const res = await api.post('/principal/subjects', { name, departmentId, courseId, semesterId, classId });
       if (res && res.success) {
         showToast('Subject created successfully.', 'success');
         document.getElementById('add-subject-form').reset();
@@ -452,12 +470,16 @@ const principal = {
     }
   },
 
-  openEditSubjectModal: (id, name, deptId, courseId, semId) => {
+  openEditSubjectModal: (id, name, deptId, courseId, semId, classId) => {
     document.getElementById('edit-subject-id').value = id;
     document.getElementById('edit-subject-name').value = name;
     document.getElementById('edit-subject-dept').value = deptId;
     document.getElementById('edit-subject-course').value = courseId;
     document.getElementById('edit-subject-sem').value = semId;
+    const editClassSelect = document.getElementById('edit-subject-class');
+    if (editClassSelect) {
+      editClassSelect.value = classId || '';
+    }
     new bootstrap.Modal(document.getElementById('editSubjectModal')).show();
   },
 
@@ -468,8 +490,9 @@ const principal = {
     const departmentId = document.getElementById('edit-subject-dept').value;
     const courseId = document.getElementById('edit-subject-course').value;
     const semesterId = document.getElementById('edit-subject-sem').value;
+    const classId = document.getElementById('edit-subject-class').value;
     try {
-      const res = await api.put(`/principal/subjects/${id}`, { name, departmentId, courseId, semesterId });
+      const res = await api.put(`/principal/subjects/${id}`, { name, departmentId, courseId, semesterId, classId });
       if (res && res.success) {
         showToast('Subject details updated.', 'success');
         bootstrap.Modal.getInstance(document.getElementById('editSubjectModal')).hide();

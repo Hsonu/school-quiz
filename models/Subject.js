@@ -5,29 +5,28 @@ const subjectSchema = {
     type: String,
     required: true
   },
-  classId: {
-    type: String,
-    ref: 'Class',
-    index: true
-  },
-  teacherId: {
-    type: String,
-    ref: 'Teacher',
-    index: true
-  },
   departmentId: {
     type: String,
     ref: 'Department',
+    required: true,
     index: true
   },
   courseId: {
     type: String,
     ref: 'Course',
+    required: true,
     index: true
   },
   semesterId: {
     type: String,
     ref: 'Semester',
+    required: true,
+    index: true
+  },
+  classId: {
+    type: String,
+    ref: 'Class',
+    required: false,
     index: true
   }
 };
