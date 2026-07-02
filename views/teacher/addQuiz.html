@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publish Quiz | QUIZGEN ERP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+  <link href="/css/teacher.css" rel="stylesheet">
+  <link href="/css/responsive.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="dashboard-container">
+    <div id="sidebar-container"></div>
+
+    <div class="main-content">
+      <div id="navbar-container"></div>
+
+      <div class="dashboard-body animated-fade">
+        <div class="mb-4">
+          <h2>Publish Online Quiz</h2>
+          <p class="text-muted small">Combine questions from your Question Bank to compile and publish an assessment
+            test.</p>
+        </div>
+
+        <div class="row">
+          <!-- Quiz Creator Form -->
+          <div class="col-lg-8">
+            <div class="erp-card">
+              <h5 class="mb-4"><i class="fas fa-paper-plane text-primary me-2"></i> Quiz Details</h5>
+              <form id="quiz-creator-form">
+                <!-- Title -->
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Quiz Title</label>
+                  <input type="text" id="quizTitle" class="form-control erp-input"
+                    placeholder="e.g. Mathematics Midterm Assessment" required>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Description / Guidelines</label>
+                  <textarea id="quizDesc" class="form-control erp-input" rows="2"
+                    placeholder="e.g. Complete all questions. Calculator is allowed."></textarea>
+                </div>
+
+                <div class="row mb-4">
+                  <!-- Subject Selection -->
+                  <div class="col-md-6 mb-3 mb-md-0">
+                    <label class="form-label small fw-semibold">Course Subject</label>
+                    <select id="subjectSelect" class="form-control erp-input" required>
+                      <option value="" disabled selected>Loading subjects...</option>
+                    </select>
+                  </div>
+                  <!-- Duration -->
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Timer Duration (Minutes)</label>
+                    <input type="number" id="quizDuration" class="form-control erp-input" value="15" min="1" max="180"
+                      required>
+                  </div>
+                </div>
+
+                <!-- Questions Selection Box -->
+                <div class="mb-4">
+                  <label class="form-label small fw-semibold">Select Questions to Include (Choose a subject above
+                    first)</label>
+                  <div class="quiz-question-selection-list" id="question-selection-container">
+                    <p class="text-muted text-center my-3">Please select a course subject above to load its questions.
+                    </p>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-premium-primary">
+                  <i class="fas fa-check-circle me-1"></i> Compile & Publish Quiz
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Guidelines Box -->
+          <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="erp-card">
+              <h5><i class="fas fa-info-circle text-primary me-2"></i> Publishing Guidelines</h5>
+              <hr class="border-color">
+              <ul class="text-muted small ps-3">
+                <li class="mb-2">Create questions inside the **Question Bank** first before publishing a quiz.</li>
+                <li class="mb-2">Selecting a Subject dynamically filters and loads questions belonging to that subject.
+                </li>
+                <li class="mb-2">A quiz is automatically published to all students enrolled in the class grade that the
+                  subject belongs to.</li>
+                <li class="mb-2">Grading is calculated automatically based on total points values.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="dashboard-footer" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/teacher.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initQuizCreator, 400);
+    });
+  </script>
+</body>
+
+</html>

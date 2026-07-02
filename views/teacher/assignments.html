@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Assignments | Teacher Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Navbar Placeholder -->
+      <div id="navbar-container"></div>
+
+      <!-- Dashboard Panel Body -->
+      <div class="dashboard-body animated-fade">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="mb-1">Student Assignments Manager</h2>
+            <p class="text-muted small mb-0">Publish student assignments, view responses, and assign grades.</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAssignmentModal">
+              <i class="fas fa-plus-circle me-1"></i> New Assignment
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Card -->
+        <div class="card mb-4 erp-card p-3 shadow-sm border-0 bg-light text-dark">
+          <div class="row g-3 align-items-end">
+            <!-- Search Text -->
+            <div class="col-md-5">
+              <label class="form-label fw-semibold small text-muted"><i class="fas fa-search me-1"></i> Search Assignments</label>
+              <input type="text" id="filter-search" class="form-control form-control-sm" placeholder="Search by title/desc...">
+            </div>
+            <!-- Subject Filter -->
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small text-muted"><i class="fas fa-book me-1"></i> Subject</label>
+              <select id="filter-subject" class="form-select form-select-sm">
+                <option value="">All Subjects</option>
+              </select>
+            </div>
+            <!-- Sort By -->
+            <div class="col-md-3">
+              <label class="form-label fw-semibold small text-muted"><i class="fas fa-sort me-1"></i> Sort By</label>
+              <select id="filter-sort" class="form-select form-select-sm">
+                <option value="dueDate-asc">Due Date (Asc)</option>
+                <option value="dueDate-desc">Due Date (Desc)</option>
+                <option value="title-asc">Title (A-Z)</option>
+                <option value="title-desc">Title (Z-A)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Card -->
+        <div class="erp-card p-0 shadow-sm overflow-hidden">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Assignment Title</th>
+                  <th>Subject</th>
+                  <th>Due Date</th>
+                  <th>Attachment</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="assignments-tbody">
+                <tr>
+                  <td colspan="5" class="text-center py-4 text-muted">Reading assignments list...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Assignment Modal -->
+      <div class="modal fade" id="addAssignmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content text-dark">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold"><i class="fas fa-plus-circle text-primary me-1"></i> Create Assignment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="add-assignment-form">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Assignment Title</label>
+                  <input type="text" id="assTitle" class="form-control" required placeholder="e.g. Lab Exercise 1">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Description / Instructions</label>
+                  <textarea id="assDesc" class="form-control" rows="2" placeholder="Instructions for students..."></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Subject Selection</label>
+                  <select id="subjectSelect" class="form-select" required></select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Due Date</label>
+                  <input type="date" id="assDueDate" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Reference Attachment (Optional)</label>
+                  <input type="file" id="assFile" class="form-control">
+                </div>
+                <div class="mt-4 text-end">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Publish</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submissions Modal -->
+      <div class="modal fade" id="submissionsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content text-dark">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title fw-bold"><i class="fas fa-tasks me-1"></i> Submissions for: <span id="sub-assignment-title">-</span></h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="sub-assignment-id">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Student</th>
+                      <th>Solution File</th>
+                      <th>Submitted Date</th>
+                      <th>Status</th>
+                      <th>Marks</th>
+                      <th class="text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="submissions-tbody">
+                    <!-- Loaded dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade Assignment Submission Modal -->
+      <div class="modal fade" id="gradeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content text-dark">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold"><i class="fas fa-poll-h text-primary me-1"></i> Grade Submission</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form id="grade-submission-form">
+                <input type="hidden" id="grade-sub-id">
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Student Name</label>
+                  <div class="form-control-plaintext fw-bold text-primary fs-5" id="grade-student-name">-</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Marks Assigned</label>
+                  <input type="number" id="grade-marks" class="form-control" required min="0" value="0">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label small fw-semibold">Teacher Feedback</label>
+                  <textarea id="grade-feedback" class="form-control" rows="2" placeholder="Great effort, clean solution!"></textarea>
+                </div>
+                <div class="mt-4 text-end">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary px-3">Log Grade</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer-container" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <!-- API and layouts scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/teacher.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadTeacherSubjects('subjectSelect');
+      await loadAssignmentsTable();
+      document.getElementById('add-assignment-form').addEventListener('submit', createAssignment);
+      document.getElementById('grade-submission-form').addEventListener('submit', submitGrade);
+    });
+  </script>
+</body>
+</html>

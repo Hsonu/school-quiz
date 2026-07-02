@@ -1,0 +1,50 @@
+<div class="navbar-left">
+  <button class="sidebar-toggle-btn">
+    <i class="fas fa-bars"></i>
+  </button>
+  <h4 class="mb-0 d-none d-md-block" id="welcome-user-text">Welcome Back</h4>
+</div>
+
+<div class="navbar-right">
+  <!-- Live Clock Widget -->
+  <div class="date-time-widget">
+    <span class="time" id="live-time">00:00:00 AM</span>
+    <span class="date" id="live-date">Thursday, June 25, 2026</span>
+  </div>
+
+  <!-- Notification Bell -->
+  <div class="notification-bell-wrapper me-3" style="position: relative; cursor: pointer;" title="Notifications">
+    <i class="far fa-bell text-muted" style="font-size: 18px;"></i>
+    <span class="position-absolute badge rounded-pill bg-danger" style="font-size: 8px; padding: 2px 4px; top: -5px; right: -5px;">2</span>
+  </div>
+
+  <!-- Dark Mode Toggle -->
+  <div class="dark-mode-toggle-wrapper me-3" style="cursor: pointer;" id="dark-mode-toggle" title="Toggle Dark/Light Mode">
+    <i class="fas fa-moon text-muted" style="font-size: 18px;" id="dark-mode-icon"></i>
+  </div>
+
+  <!-- Profile Menu -->
+  <div class="user-profile-dropdown">
+    <div class="user-profile-trigger">
+      <img src="{{AVATAR_SRC}}" alt="Avatar" class="user-avatar" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+      <div class="user-info d-none d-sm-flex">
+        <span class="name">{{USER_NAME}}</span>
+        <span class="role">{{USER_ROLE}}</span>
+      </div>
+      <i class="fas fa-chevron-down text-muted" style="font-size: 11px"></i>
+    </div>
+    
+    <div class="erp-dropdown-menu">
+      <a href="./profile" class="erp-dropdown-item">
+        <i class="fas fa-user-circle"></i> View Profile
+      </a>
+      <a href="./settings" class="erp-dropdown-item">
+        <i class="fas fa-cog"></i> Settings
+      </a>
+      <hr class="my-1 border-color">
+      <a class="erp-dropdown-item sidebar-logout" href="#" style="color: var(--danger)">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </div>
+</div>

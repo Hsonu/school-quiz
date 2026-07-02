@@ -1,0 +1,138 @@
+/* Teacher view page styling overrides */
+
+.class-grid, .subject-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.class-card, .subject-card {
+  border: 1.5px solid var(--border-color);
+  background-color: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 24px;
+  position: relative;
+  transition: var(--transition);
+}
+
+.class-card:hover, .subject-card:hover {
+  border-color: var(--primary-blue);
+  box-shadow: var(--shadow-md);
+}
+
+.class-card-title, .subject-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin-bottom: 8px;
+}
+
+.class-card-subtitle, .subject-card-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Question bank additions & forms styling */
+.question-option-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.question-option-item input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.question-option-item input[type="text"] {
+  flex: 1;
+}
+
+/* Add Question card layouts */
+.q-bank-item {
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: var(--transition);
+}
+
+.q-bank-item:hover {
+  border-color: rgba(30, 64, 175, 0.2);
+  box-shadow: var(--shadow-sm);
+}
+
+.q-bank-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.q-bank-text {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-dark);
+}
+
+.q-bank-options {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.q-bank-option {
+  padding: 8px 12px;
+  background-color: var(--primary-light);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.q-bank-option.correct-option {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+/* Selections grid inside Quiz creation */
+.quiz-question-selection-list {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  background-color: #f8fafc;
+}
+
+.q-selection-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+.q-selection-row:last-child {
+  border-bottom: none;
+}
+.q-selection-row input[type="checkbox"] {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+}
+.q-selection-info {
+  flex: 1;
+}

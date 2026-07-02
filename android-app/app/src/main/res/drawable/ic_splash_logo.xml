@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.15"
+        android:pathData="M60,60m-55,0a55,55 0,1 1,110 0a55,55 0,1 1,-110 0" />
+
+    <!-- Inner circle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.1"
+        android:pathData="M60,60m-42,0a42,42 0,1 1,84 0a42,42 0,1 1,-84 0" />
+
+    <!-- Graduation cap top -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,28 L30,43 L60,58 L90,43 Z" />
+
+    <!-- Graduation cap brim shadow -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.7"
+        android:pathData="M60,58 L90,43 L90,47 L60,62 Z" />
+
+    <!-- Left tassel string -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,48 L42,65"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFF" />
+
+    <!-- Tassel -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M42,65 L38,75 L42,73 L46,75 Z" />
+
+    <!-- Letter Q -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,68 Q52,62 60,62 Q68,62 68,68 Q68,74 60,74 Q52,74 52,68 Z M57,68 Q57,65 60,65 Q63,65 63,68 Q63,71 60,71 Q57,71 57,68 Z" />
+
+    <!-- Q tail -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M63,72 L68,78"
+        android:strokeWidth="2.5"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round" />
+
+    <!-- Underline accent -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M45,82 L75,82"
+        android:strokeWidth="3"
+        android:strokeColor="#F59E0B"
+        android:strokeLineCap="round" />
+
+</vector>

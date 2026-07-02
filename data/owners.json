@@ -1,0 +1,11 @@
+[
+  {
+    "_id": "gdint0fha",
+    "name": "Nakul Sir",
+    "email": "owner@rajcomputer.com",
+    "password": "$2a$10$fVeFDqjFWpY5pyyy7.7IBuYd3BOBod0IQGS9MeHFkrFrOrQfy6aFG",
+    "role": "owner",
+    "createdAt": "2026-06-26T18:01:02.062Z",
+    "updatedAt": "2026-06-26T18:01:02.062Z"
+  }
+]

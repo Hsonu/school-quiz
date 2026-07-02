@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QUIZGEN</string>
+    <string name="tagline">College ERP Portal</string>
+    <string name="loading">Loading QUIZGEN…</string>
+    <string name="no_internet_title">No Internet Connection</string>
+    <string name="no_internet_message">Please check your Wi-Fi or mobile data connection and try again.</string>
+    <string name="retry">Retry</string>
+    <string name="auto_connect_hint">Will auto-connect when network is available</string>
+    <string name="exit_confirm">Press back again to exit</string>
+    <string name="download_started">Downloading: %s</string>
+    <string name="download_failed">Download failed. Try again.</string>
+    <string name="camera_denied">Camera permission denied. You can still select files.</string>
+</resources>

@@ -1,0 +1,28 @@
+[
+  {
+    "_id": "a7rz7xruu",
+    "attemptId": "fzh3edb23",
+    "studentId": "4fu7ubs2x",
+    "quizId": "hvhkje2nz",
+    "score": 3,
+    "totalMarks": 5,
+    "percentage": 60,
+    "status": "Pass",
+    "type": "quiz",
+    "createdAt": "2026-06-26T18:01:02.091Z",
+    "updatedAt": "2026-06-26T18:01:02.091Z"
+  },
+  {
+    "_id": "a7x6zzd7q",
+    "attemptId": "fzh3edb23",
+    "studentId": "4fu7ubs2x",
+    "examId": "zj5ixghvl",
+    "type": "exam",
+    "score": 85,
+    "totalMarks": 100,
+    "percentage": 85,
+    "status": "Pass",
+    "createdAt": "2026-06-26T18:01:02.092Z",
+    "updatedAt": "2026-06-26T18:01:02.092Z"
+  }
+]

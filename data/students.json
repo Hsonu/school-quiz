@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "4fu7ubs2x",
+    "name": "Peter Parker",
+    "email": "student@rajcomputer.com",
+    "password": "$2a$10$fVeFDqjFWpY5pyyy7.7IBuzf5Xt0IqR7hKXRmzWL6hACVLKyy10li",
+    "classId": "jcn4s6d99",
+    "rollNo": "RC-2026-007",
+    "profilePic": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=150&auto=format&fit=crop",
+    "isActive": true,
+    "createdAt": "2026-06-26T18:01:02.090Z",
+    "updatedAt": "2026-06-26T18:01:02.090Z"
+  }
+]

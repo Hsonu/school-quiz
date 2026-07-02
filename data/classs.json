@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "jcn4s6d99",
+    "name": "Grade 10-A",
+    "teacherId": "lt2pdhsf6",
+    "createdAt": "2026-06-26T18:01:02.067Z",
+    "updatedAt": "2026-06-26T18:01:02.067Z"
+  },
+  {
+    "_id": "w4bo0vxbm",
+    "name": "Grade 11-B",
+    "teacherId": "lt2pdhsf6",
+    "createdAt": "2026-06-26T18:01:02.070Z",
+    "updatedAt": "2026-06-26T18:01:02.070Z"
+  }
+]

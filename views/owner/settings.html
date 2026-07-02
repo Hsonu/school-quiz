@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Settings & Security | Owner Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Navbar Placeholder -->
+      <div id="navbar-container"></div>
+
+      <!-- Dashboard Panel Body -->
+      <div class="dashboard-body animated-fade">
+        <div class="mb-4">
+          <h2 class="mb-1">ERP Settings & Security Center</h2>
+          <p class="text-muted small mb-0">Configure institution branding parameters, manage user access permissions,
+            and run database backups or restorations.</p>
+        </div>
+
+        <div class="row g-4">
+          <!-- Left Column: Branding Settings and Backup Card -->
+          <div class="col-lg-6">
+            <!-- College Information & Branding -->
+            <div class="erp-card mb-4 shadow-sm">
+              <h5 class="mb-4 text-primary"><i class="fas fa-university me-2"></i> College Branding Settings</h5>
+              <form id="branding-settings-form">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">ERP Branding Title</label>
+                  <input type="text" id="settings-branding" class="form-control" required
+                    placeholder="e.g. QUIZGEN  ERP">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">College Name</label>
+                  <input type="text" id="settings-name" class="form-control" required
+                    placeholder="e.g. QUIZGEN  Institute">
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold small">College Code</label>
+                    <input type="text" id="settings-code" class="form-control" required placeholder="e.g. RC">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold small">Office Contact</label>
+                    <input type="text" id="settings-contact" class="form-control" placeholder="e.g. +91 9999999999">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Physical Address</label>
+                  <textarea id="settings-address" class="form-control" rows="2"
+                    placeholder="Street Address, City..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary px-4 py-2 mt-2"><i class="fas fa-save me-1"></i> Save
+                  Configuration</button>
+              </form>
+            </div>
+
+            <!-- Database Backup and Restore Operations -->
+            <div class="erp-card shadow-sm bg-light-blue">
+              <h5 class="mb-3 text-primary"><i class="fas fa-database me-2"></i> Database Administration (Backup &
+                Restore)</h5>
+              <p class="text-muted small">Maintain business continuity. Export full JSON schema bundles of all tables,
+                or restore from a previously downloaded backup file.</p>
+
+              <div class="row g-3 mt-2">
+                <!-- Backup Panel -->
+                <div class="col-sm-6 text-center text-sm-start border-end border-color pr-3">
+                  <h6 class="fw-bold mb-2">Export Tables Data</h6>
+                  <p class="text-muted" style="font-size: 11px;">Downloads database records including profiles, quiz
+                    archives, exam banks, and results stats.</p>
+                  <a href="/api/owner/backup" id="backup-btn" class="btn btn-info w-100 text-dark fw-semibold py-2">
+                    <i class="fas fa-cloud-download-alt me-1"></i> Download Backup JSON
+                  </a>
+                </div>
+
+                <!-- Restore Panel -->
+                <div class="col-sm-6">
+                  <h6 class="fw-bold mb-2">Import & Overwrite Schema</h6>
+                  <p class="text-muted" style="font-size: 11px; color: var(--danger) !important;"><i
+                      class="fas fa-exclamation-triangle"></i> Warning: Restoring overwrites existing files.</p>
+                  <form id="restore-form" enctype="multipart/form-data">
+                    <div class="mb-2">
+                      <input class="form-control form-control-sm" type="file" id="backupFile" accept=".json" required>
+                    </div>
+                    <button type="submit" class="btn btn-outline-danger w-100 py-2 btn-sm fw-semibold">
+                      <i class="fas fa-upload me-1"></i> Upload and Restore DB
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: User Account Permissions Toggle -->
+          <div class="col-lg-6">
+            <div class="erp-card shadow-sm p-0 overflow-hidden">
+              <div class="p-3 border-bottom border-color d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 text-primary"><i class="fas fa-user-shield me-2"></i> User Access Permissions</h5>
+                <select id="user-role-filter" class="form-select form-select-sm w-50">
+                  <option value="principal">Principals Directory</option>
+                  <option value="teacher">Teachers Directory</option>
+                  <option value="student">Students Directory</option>
+                </select>
+              </div>
+
+              <!-- Users List Table -->
+              <div class="table-responsive" style="max-height: 520px;">
+                <table class="table table-hover align-middle mb-0" id="users-permission-table">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Name / Email</th>
+                      <th>Account Status</th>
+                      <th class="text-end">Toggle Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="permissions-tbody">
+                    <tr>
+                      <td colspan="3" class="text-center py-4 text-muted">Select a directory load state...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="footer-container" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <!-- API and layouts scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let usersList = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadSettings();
+      await loadUsersDirectory();
+
+      document.getElementById('branding-settings-form').addEventListener('submit', saveSettings);
+      document.getElementById('restore-form').addEventListener('submit', restoreDatabase);
+      document.getElementById('user-role-filter').addEventListener('change', loadUsersDirectory);
+
+      // Setup download auth token query append
+      const backupBtn = document.getElementById('backup-btn');
+      if (backupBtn) {
+        backupBtn.href = `/api/owner/backup?token=${api.getToken()}`;
+      }
+    });
+
+    async function loadSettings() {
+      try {
+        const res = await api.get('/owner/settings');
+        if (res && res.success) {
+          const s = res.data;
+          document.getElementById('settings-branding').value = s.branding || '';
+          document.getElementById('settings-name').value = s.collegeName || '';
+          document.getElementById('settings-code').value = s.collegeCode || '';
+          document.getElementById('settings-contact').value = s.settings.contact || '';
+          document.getElementById('settings-address').value = s.collegeAddress || '';
+        }
+      } catch (err) {
+        showToast('Failed to load branding settings: ' + err.message, 'danger');
+      }
+    }
+
+    async function saveSettings(e) {
+      e.preventDefault();
+      const branding = document.getElementById('settings-branding').value.trim();
+      const collegeName = document.getElementById('settings-name').value.trim();
+      const collegeCode = document.getElementById('settings-code').value.trim();
+      const contact = document.getElementById('settings-contact').value.trim();
+      const collegeAddress = document.getElementById('settings-address').value.trim();
+
+      try {
+        const res = await api.put('/owner/settings', {
+          branding,
+          collegeName,
+          collegeCode,
+          collegeAddress,
+          settings: { contact }
+        });
+        if (res && res.success) {
+          showToast('College ERP branding configurations updated!', 'success');
+          // Reload
+          await loadSettings();
+        }
+      } catch (err) {
+        showToast('Error updating configuration: ' + err.message, 'danger');
+      }
+    }
+
+    async function loadUsersDirectory() {
+      const role = document.getElementById('user-role-filter').value;
+      const tbody = document.getElementById('permissions-tbody');
+      tbody.innerHTML = '<tr><td colspan="3" class="text-center py-3 text-muted"><div class="spinner-border spinner-border-sm text-primary"></div> Reading records...</td></tr>';
+
+      try {
+        let endpoint = '';
+        if (role === 'principal') endpoint = '/owner/principals';
+        else if (role === 'teacher') endpoint = '/owner/teachers';
+        else endpoint = '/owner/students';
+
+        const res = await api.get(endpoint);
+        if (res && res.success) {
+          usersList = res.data;
+
+          if (usersList.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center py-3 text-muted">No accounts registered under this category.</td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = usersList.map(u => {
+            const toggleIcon = u.isActive ? 'fa-user-slash text-danger' : 'fa-user-check text-success';
+            const toggleText = u.isActive ? 'Deactivate' : 'Activate';
+
+            return `
+              <tr>
+                <td>
+                  <div class="fw-semibold text-dark">${u.name}</div>
+                  <div class="text-muted small">${u.email}</div>
+                </td>
+                <td>
+                  <span class="badge bg-${u.isActive ? 'success' : 'secondary'}">
+                    ${u.isActive ? 'Active' : 'Disabled'}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <button class="btn btn-sm btn-outline-${u.isActive ? 'danger' : 'success'} px-3" onclick="toggleUserStatus('${u.id}', ${u.isActive})">
+                    <i class="fas ${toggleIcon} me-1"></i> ${toggleText}
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center py-3 text-danger">Failed to fetch users: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function toggleUserStatus(id, currentStatus) {
+      if (!confirm(`Are you sure you want to ${currentStatus ? 'deactivate' : 'activate'} this user account?`)) return;
+
+      try {
+        const res = await api.put(`/owner/users/${id}/permissions`, { isActive: !currentStatus });
+        if (res && res.success) {
+          showToast('User account status updated successfully!', 'success');
+          await loadUsersDirectory();
+        }
+      } catch (err) {
+        showToast(err.message, 'danger');
+      }
+    }
+
+    async function restoreDatabase(e) {
+      e.preventDefault();
+      if (!confirm('CRITICAL WARNING: Restoring the database will drop all current data and overwrite it. Are you sure you want to proceed?')) return;
+
+      const fileInput = document.getElementById('backupFile');
+      if (fileInput.files.length === 0) return;
+
+      const formData = new FormData();
+      formData.append('backupFile', fileInput.files[0]);
+
+      try {
+        const res = await api.postMultipart('/owner/restore', formData);
+        if (res && res.success) {
+          showToast('Database restore complete! The system data has been populated.', 'success');
+          fileInput.value = '';
+          await loadUsersDirectory();
+        }
+      } catch (err) {
+        showToast('Restore Failed: ' + err.message, 'danger');
+      }
+    }
+  </script>
+</body>
+
+</html>

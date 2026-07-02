@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Principals | QUIZGEN ERP</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+  <style>
+    .filter-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Navbar Placeholder -->
+      <div id="navbar-container"></div>
+
+      <!-- Content Body -->
+      <div class="dashboard-body animated-fade">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="mb-1">Principal Directory</h2>
+            <p class="text-muted small mb-0">Add, edit, remove, reset passwords, and assign colleges to institutional
+              Principals.</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPrincipalModal">
+              <i class="fas fa-plus-circle me-1"></i> Add Principal
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar shadow-sm">
+          <form id="filter-form" class="row g-3 align-items-end">
+            <div class="col-md-5">
+              <label class="form-label small fw-semibold text-muted">Search Name / Email</label>
+              <input type="text" id="search-input" class="form-control" placeholder="Search name or email...">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-muted">Status</label>
+              <select id="status-filter" class="form-select">
+                <option value="">All Statuses</option>
+                <option value="active">Active Only</option>
+                <option value="inactive">Deactivated Only</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <button type="button" id="reset-filters" class="btn btn-outline-secondary w-100"><i
+                  class="fas fa-undo me-1"></i> Reset</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Data Table Card -->
+        <div class="erp-card p-0 overflow-hidden shadow-sm">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="principals-table">
+              <thead class="table-light">
+                <tr>
+                  <th style="cursor: pointer;" data-sort="name">Principal Name <i
+                      class="fas fa-sort ms-1 small text-muted"></i></th>
+                  <th style="cursor: pointer;" data-sort="email">Email <i class="fas fa-sort ms-1 small text-muted"></i>
+                  </th>
+                  <th>Assigned College</th>
+                  <th>Status</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="principals-tbody">
+                <tr>
+                  <td colspan="5" class="text-center py-4 text-muted">Fetching principal records...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination -->
+          <div class="d-flex justify-content-between align-items-center p-3 border-top border-color">
+            <span class="small text-muted" id="table-info">Showing 0 of 0 entries</span>
+            <nav>
+              <ul class="pagination pagination-sm mb-0" id="pagination-controls">
+                <!-- Dynamic controls -->
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Principal Modal -->
+      <div class="modal fade" id="addPrincipalModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content text-dark">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold"><i class="fas fa-user-plus me-1 text-primary"></i> Create Principal
+                Account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="add-principal-form">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Full Name</label>
+                  <input type="text" id="add-name" class="form-control" required
+                    placeholder="e.g. Dr. Arthur Pendragon">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Email Address</label>
+                  <input type="email" id="add-email" class="form-control" required
+                    placeholder="principal@rajcomputer.com">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Default Password</label>
+                  <input type="password" id="add-password" class="form-control" required minlength="6"
+                    placeholder="Min 6 characters">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Assign College</label>
+                  <select id="add-college" class="form-select"></select>
+                </div>
+                <div class="mt-4 text-end">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Principal Modal -->
+      <div class="modal fade" id="editPrincipalModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content text-dark">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold"><i class="fas fa-edit me-1 text-primary"></i> Edit Principal</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="edit-principal-form">
+                <input type="hidden" id="edit-id">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Full Name</label>
+                  <input type="text" id="edit-name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Email Address</label>
+                  <input type="email" id="edit-email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Assign College</label>
+                  <select id="edit-college" class="form-select"></select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Account Status</label>
+                  <select id="edit-status" class="form-select">
+                    <option value="true">Active / Enabled</option>
+                    <option value="false">Deactivated / Disabled</option>
+                  </select>
+                </div>
+                <div class="mt-4 text-end">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reset Password Modal -->
+      <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content text-dark">
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title fw-bold"><i class="fas fa-key me-1"></i> Force Reset Password</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="reset-password-form">
+                <input type="hidden" id="reset-id">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">New Secure Password</label>
+                  <input type="password" id="reset-password" class="form-control" required minlength="6"
+                    placeholder="Min 6 characters">
+                  <div class="form-text small text-muted">This will instantly overwrite the previous password. Provide
+                    the new key to the Principal.</div>
+                </div>
+                <div class="mt-4 text-end">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-danger">Confirm Reset</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer-container" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <!-- API and layouts scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let principalsList = [];
+    let collegesList = [];
+    let currentPage = 1;
+    const itemsPerPage = 8;
+    let currentSort = { field: 'name', asc: true };
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadColleges();
+      await loadPrincipals();
+
+      // Hook Filters
+      document.getElementById('search-input').addEventListener('input', renderTable);
+      document.getElementById('status-filter').addEventListener('change', renderTable);
+      document.getElementById('reset-filters').addEventListener('click', () => {
+        document.getElementById('search-input').value = '';
+        document.getElementById('status-filter').value = '';
+        renderTable();
+      });
+
+      // Hook Forms
+      document.getElementById('add-principal-form').addEventListener('submit', createPrincipal);
+      document.getElementById('edit-principal-form').addEventListener('submit', updatePrincipal);
+      document.getElementById('reset-password-form').addEventListener('submit', resetPassword);
+
+      // Sorting
+      document.querySelectorAll('#principals-table th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+          const field = th.getAttribute('data-sort');
+          if (currentSort.field === field) {
+            currentSort.asc = !currentSort.asc;
+          } else {
+            currentSort.field = field;
+            currentSort.asc = true;
+          }
+          renderTable();
+        });
+      });
+    });
+
+    async function loadColleges() {
+      try {
+        const res = await api.get('/owner/colleges');
+        if (res && res.success) {
+          collegesList = res.data;
+
+          // Populate dropdowns
+          const addSel = document.getElementById('add-college');
+          const editSel = document.getElementById('edit-college');
+
+          const optionsHtml = collegesList.map(c => `<option value="${c._id}">${c.name} (${c.code})</option>`).join('');
+          const placeholder = '<option value="" selected>Select College</option>';
+
+          if (addSel) addSel.innerHTML = placeholder + optionsHtml;
+          if (editSel) editSel.innerHTML = placeholder + optionsHtml;
+        }
+      } catch (err) {
+        console.error('Failed to load colleges:', err);
+      }
+    }
+
+    async function loadPrincipals() {
+      try {
+        const res = await api.get('/owner/principals');
+        if (res && res.success) {
+          principalsList = res.data;
+          renderTable();
+        }
+      } catch (err) {
+        showToast('Error loading principals: ' + err.message, 'danger');
+      }
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('principals-tbody');
+      if (!tbody) return;
+
+      const searchVal = document.getElementById('search-input').value.trim().toLowerCase();
+      const statusVal = document.getElementById('status-filter').value;
+
+      // Filter
+      let filtered = principalsList.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchVal) || p.email.toLowerCase().includes(searchVal);
+        const matchesStatus = !statusVal || (statusVal === 'active' && p.isActive) || (statusVal === 'inactive' && !p.isActive);
+        return matchesSearch && matchesStatus;
+      });
+
+      // Sort
+      filtered.sort((a, b) => {
+        let valA = a[currentSort.field] || '';
+        let valB = b[currentSort.field] || '';
+        if (typeof valA === 'string') {
+          return currentSort.asc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+        return currentSort.asc ? valA - valB : valB - valA;
+      });
+
+      // Paginate
+      const totalItems = filtered.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const paginated = filtered.slice(startIdx, startIdx + itemsPerPage);
+
+      // Render
+      if (paginated.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">No principal records found.</td></tr>';
+      } else {
+        tbody.innerHTML = paginated.map(p => `
+          <tr>
+            <td>
+              <div class="d-flex align-items-center gap-3">
+                <div class="avatar-circle-sm bg-primary text-white fw-bold">${p.name.charAt(0)}</div>
+                <div>
+                  <h6 class="mb-0 fw-bold text-dark">${p.name}</h6>
+                  <span class="text-muted small">ID: ${p.id}</span>
+                </div>
+              </div>
+            </td>
+            <td>${p.email}</td>
+            <td><strong>${p.collegeName || 'Unassigned'}</strong></td>
+            <td>
+              <span class="badge bg-${p.isActive ? 'success' : 'secondary'}">
+                ${p.isActive ? 'Active' : 'Deactivated'}
+              </span>
+            </td>
+            <td class="text-end">
+              <div class="dropdown d-inline-block">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle px-3 py-1" type="button" data-bs-toggle="dropdown">
+                  Actions
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-menu-item dropdown-item" href="#" onclick="openEditModal('${p.id}', '${p.name}', '${p.email}', '${p.collegeId}', ${p.isActive})"><i class="fas fa-edit me-2 text-primary"></i> Edit Profile</a></li>
+                  <li><a class="dropdown-menu-item dropdown-item" href="#" onclick="openResetModal('${p.id}')"><i class="fas fa-key me-2 text-warning"></i> Reset Password</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-menu-item dropdown-item text-danger" href="#" onclick="deletePrincipal('${p.id}')"><i class="fas fa-trash-alt me-2"></i> Delete Account</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Info & Pagination Controls
+      document.getElementById('table-info').textContent = `Showing ${paginated.length > 0 ? startIdx + 1 : 0} to ${startIdx + paginated.length} of ${totalItems} entries`;
+
+      const pagControls = document.getElementById('pagination-controls');
+      let pagHtml = '';
+
+      // Prev Button
+      pagHtml += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Prev</a></li>`;
+
+      // Page numbers
+      for (let i = 1; i <= totalPages; i++) {
+        pagHtml += `<li class="page-item ${currentPage === i ? 'active' : ''}"><a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`;
+      }
+
+      // Next Button
+      pagHtml += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}"><a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a></li>`;
+
+      pagControls.innerHTML = pagHtml;
+    }
+
+    function changePage(page) {
+      currentPage = page;
+      renderTable();
+    }
+
+    async function createPrincipal(e) {
+      e.preventDefault();
+      const name = document.getElementById('add-name').value.trim();
+      const email = document.getElementById('add-email').value.trim();
+      const password = document.getElementById('add-password').value;
+      const collegeId = document.getElementById('add-college').value;
+
+      try {
+        const res = await api.post('/owner/principals', { name, email, password, collegeId });
+        if (res && res.success) {
+          showToast('Principal created successfully!', 'success');
+          document.getElementById('add-principal-form').reset();
+
+          // Hide modal
+          const modal = bootstrap.Modal.getInstance(document.getElementById('addPrincipalModal'));
+          if (modal) modal.hide();
+
+          await loadPrincipals();
+        }
+      } catch (err) {
+        showToast(err.message || 'Error creating principal.', 'danger');
+      }
+    }
+
+    function openEditModal(id, name, email, collegeId, isActive) {
+      document.getElementById('edit-id').value = id;
+      document.getElementById('edit-name').value = name;
+      document.getElementById('edit-email').value = email;
+      document.getElementById('edit-college').value = collegeId;
+      document.getElementById('edit-status').value = isActive ? 'true' : 'false';
+
+      const modal = new bootstrap.Modal(document.getElementById('editPrincipalModal'));
+      modal.show();
+    }
+
+    async function updatePrincipal(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-id').value;
+      const name = document.getElementById('edit-name').value.trim();
+      const email = document.getElementById('edit-email').value.trim();
+      const collegeId = document.getElementById('edit-college').value;
+      const isActive = document.getElementById('edit-status').value === 'true';
+
+      try {
+        const res = await api.put(`/owner/principals/${id}`, { name, email, collegeId, isActive });
+        if (res && res.success) {
+          showToast('Principal details updated!', 'success');
+          const modal = bootstrap.Modal.getInstance(document.getElementById('editPrincipalModal'));
+          if (modal) modal.hide();
+          await loadPrincipals();
+        }
+      } catch (err) {
+        showToast(err.message || 'Error updating principal.', 'danger');
+      }
+    }
+
+    function openResetModal(id) {
+      document.getElementById('reset-id').value = id;
+      document.getElementById('reset-password').value = '';
+      const modal = new bootstrap.Modal(document.getElementById('resetPasswordModal'));
+      modal.show();
+    }
+
+    async function resetPassword(e) {
+      e.preventDefault();
+      const id = document.getElementById('reset-id').value;
+      const newPassword = document.getElementById('reset-password').value;
+
+      try {
+        const res = await api.put(`/owner/principals/${id}/reset-password`, { newPassword });
+        if (res && res.success) {
+          showToast('Principal password reset successfully!', 'success');
+          const modal = bootstrap.Modal.getInstance(document.getElementById('resetPasswordModal'));
+          if (modal) modal.hide();
+        }
+      } catch (err) {
+        showToast(err.message || 'Error resetting password.', 'danger');
+      }
+    }
+
+    async function deletePrincipal(id) {
+      if (!confirm('Are you sure you want to permanently delete this Principal account?')) return;
+
+      try {
+        const res = await api.delete(`/owner/principals/${id}`);
+        if (res && res.success) {
+          showToast('Principal deleted.', 'success');
+          await loadPrincipals();
+        }
+      } catch (err) {
+        showToast(err.message || 'Error deleting principal.', 'danger');
+      }
+    }
+  </script>
+</body>
+
+</html>

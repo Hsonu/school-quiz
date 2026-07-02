@@ -1,0 +1,87 @@
+[
+  {
+    "_id": "ckhcmvtqn",
+    "subjectId": "eyi0qwv8j",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "questionText": "What is the value of pi to two decimal places?",
+    "options": [
+      "3.12",
+      "3.16",
+      "3.14",
+      "3.20"
+    ],
+    "correctAnswer": 2,
+    "points": 1,
+    "createdAt": "2026-06-26T18:01:02.074Z",
+    "updatedAt": "2026-06-26T18:01:02.074Z"
+  },
+  {
+    "_id": "bfpmcjhzi",
+    "subjectId": "eyi0qwv8j",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "questionText": "Solve for x in the equation: 2x + 5 = 15.",
+    "options": [
+      "x = 5",
+      "x = 10",
+      "x = 7.5",
+      "x = 8"
+    ],
+    "correctAnswer": 0,
+    "points": 2,
+    "createdAt": "2026-06-26T18:01:02.076Z",
+    "updatedAt": "2026-06-26T18:01:02.076Z"
+  },
+  {
+    "_id": "jhor6fr4k",
+    "subjectId": "eyi0qwv8j",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "questionText": "What is the derivative of x^2 with respect to x?",
+    "options": [
+      "x",
+      "2x",
+      "2",
+      "x^2/2"
+    ],
+    "correctAnswer": 1,
+    "points": 2,
+    "createdAt": "2026-06-26T18:01:02.077Z",
+    "updatedAt": "2026-06-26T18:01:02.077Z"
+  },
+  {
+    "_id": "c9vim0r7k",
+    "subjectId": "s1839pp3y",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "questionText": "Which data structure follows the Last-In-First-Out (LIFO) principle?",
+    "options": [
+      "Queue",
+      "Stack",
+      "Binary Tree",
+      "Linked List"
+    ],
+    "correctAnswer": 1,
+    "points": 1,
+    "createdAt": "2026-06-26T18:01:02.079Z",
+    "updatedAt": "2026-06-26T18:01:02.079Z"
+  },
+  {
+    "_id": "ifb4nguw9",
+    "subjectId": "s1839pp3y",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "questionText": "What does HTML stand for?",
+    "options": [
+      "Hyper Text Markup Language",
+      "High Transfer Mobile Link",
+      "Hyperlink Text Management Language",
+      "Home Tool Markup Language"
+    ],
+    "correctAnswer": 0,
+    "points": 1,
+    "createdAt": "2026-06-26T18:01:02.081Z",
+    "updatedAt": "2026-06-26T18:01:02.081Z"
+  }
+]

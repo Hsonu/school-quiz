@@ -1,0 +1,35 @@
+[
+  {
+    "_id": "hvhkje2nz",
+    "title": "Mathematics Midterm Assessment",
+    "description": "Covers algebra, calculus derivatives, and basic geometry coefficients.",
+    "subjectId": "eyi0qwv8j",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "questions": [
+      "ckhcmvtqn",
+      "bfpmcjhzi",
+      "jhor6fr4k"
+    ],
+    "duration": 10,
+    "totalMarks": 5,
+    "createdAt": "2026-06-26T18:01:02.081Z",
+    "updatedAt": "2026-06-26T18:01:02.082Z"
+  },
+  {
+    "_id": "djw0a7c48",
+    "title": "Computer Science Quiz 1",
+    "description": "Tests basic understanding of programming algorithms and markup layouts.",
+    "subjectId": "s1839pp3y",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "questions": [
+      "c9vim0r7k",
+      "ifb4nguw9"
+    ],
+    "duration": 5,
+    "totalMarks": 2,
+    "createdAt": "2026-06-26T18:01:02.089Z",
+    "updatedAt": "2026-06-26T18:01:02.089Z"
+  }
+]

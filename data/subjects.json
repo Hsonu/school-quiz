@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "eyi0qwv8j",
+    "name": "Mathematics",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "createdAt": "2026-06-26T18:01:02.071Z",
+    "updatedAt": "2026-06-26T18:01:02.071Z"
+  },
+  {
+    "_id": "s1839pp3y",
+    "name": "Computer Science",
+    "classId": "jcn4s6d99",
+    "teacherId": "lt2pdhsf6",
+    "createdAt": "2026-06-26T18:01:02.072Z",
+    "updatedAt": "2026-06-26T18:01:02.072Z"
+  },
+  {
+    "_id": "pxveon9ru",
+    "name": "Quantum Physics",
+    "classId": "w4bo0vxbm",
+    "teacherId": "lt2pdhsf6",
+    "createdAt": "2026-06-26T18:01:02.074Z",
+    "updatedAt": "2026-06-26T18:01:02.074Z"
+  }
+]

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Results | QUIZGEN ERP</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+  <link href="/css/student.css" rel="stylesheet">
+  <link href="/css/responsive.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Navbar Placeholder -->
+      <div id="navbar-container"></div>
+
+      <!-- Dashboard Panel Body -->
+      <div class="dashboard-body animated-fade">
+        <div class="mb-4">
+          <h2>Quiz Performance Report</h2>
+          <p class="text-muted small">Detailed review of your quiz attempt, points scored, and correct solutions.</p>
+        </div>
+
+        <!-- Grade Summary Banner -->
+        <div class="result-header-card animated-fade">
+          <div class="result-percentage-gauge" id="res-gauge">-%</div>
+          <h2 id="res-quiz-title">Loading Performance Report...</h2>
+          <p class="text-white-50 mb-0" id="res-quiz-details">Subject Module | Grade Section</p>
+
+          <div class="result-summary-grid">
+            <div class="result-summary-item">
+              <span class="result-summary-label">Marks Scored</span>
+              <span class="result-summary-val" id="res-score">-</span>
+            </div>
+            <div class="result-summary-item">
+              <span class="result-summary-label">Accuracy Rate</span>
+              <span class="result-summary-val" id="res-percentage">-%</span>
+            </div>
+            <div class="result-summary-item">
+              <span class="result-summary-label">Timer Duration</span>
+              <span class="result-summary-val" id="res-time-taken">-</span>
+            </div>
+            <div class="result-summary-item">
+              <span class="result-summary-label">Grading Status</span>
+              <span class="result-summary-val" id="res-status">-</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Graded list details -->
+          <div class="col-lg-8">
+            <h4 class="mb-4"><i class="fas fa-tasks text-primary me-2"></i> Graded Question Sheet</h4>
+            <div id="graded-questions-review">
+              <!-- Dynamically populated review items -->
+              <div class="text-center py-5 text-muted">
+                <div class="spinner-border spinner-border-sm text-primary mb-2"></div><br>Compiling graded answer
+                sheets...
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick statistics details -->
+          <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="erp-card mb-4">
+              <h5 class="mb-3"><i class="fas fa-calendar-check text-primary me-2"></i> Grading Summary</h5>
+              <hr class="border-color">
+              <div class="list-group list-group-flush small">
+                <div class="list-group-item d-flex justify-content-between py-3 border-0 border-bottom">
+                  <span>Questions Corrected</span>
+                  <strong class="text-success" id="res-correct">-</strong>
+                </div>
+                <div class="list-group-item d-flex justify-content-between py-3 border-0 border-bottom">
+                  <span>Graded Timestamp</span>
+                  <strong id="res-completed">-</strong>
+                </div>
+                <div class="list-group-item d-flex justify-content-between py-3 border-0 border-bottom">
+                  <span>Overall Status</span>
+                  <strong id="res-summary-text">-</strong>
+                </div>
+              </div>
+            </div>
+
+            <a href="/student/selectQuiz" class="btn-premium-primary w-100 text-decoration-none text-center">
+              <i class="fas fa-reply me-1"></i> Back to Quizzes
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <footer class="dashboard-footer" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/quiz.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(loadDetailedResultSheet, 400);
+    });
+  </script>
+</body>
+
+</html>

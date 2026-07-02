@@ -1,0 +1,47 @@
+[
+  {
+    "_id": "jzga37jgu",
+    "studentId": "4fu7ubs2x",
+    "classId": "jcn4s6d99",
+    "date": "2026-06-25T06:30:00.000Z",
+    "status": "Present",
+    "createdAt": "2026-06-26T18:01:02.094Z",
+    "updatedAt": "2026-06-26T18:01:02.094Z"
+  },
+  {
+    "_id": "ewbupd672",
+    "studentId": "4fu7ubs2x",
+    "classId": "jcn4s6d99",
+    "date": "2026-06-24T06:30:00.000Z",
+    "status": "Present",
+    "createdAt": "2026-06-26T18:01:02.094Z",
+    "updatedAt": "2026-06-26T18:01:02.094Z"
+  },
+  {
+    "_id": "77q8magsc",
+    "studentId": "4fu7ubs2x",
+    "classId": "jcn4s6d99",
+    "date": "2026-06-23T06:30:00.000Z",
+    "status": "Absent",
+    "createdAt": "2026-06-26T18:01:02.095Z",
+    "updatedAt": "2026-06-26T18:01:02.095Z"
+  },
+  {
+    "_id": "d9ap2z4oe",
+    "studentId": "4fu7ubs2x",
+    "classId": "jcn4s6d99",
+    "date": "2026-06-22T06:30:00.000Z",
+    "status": "Present",
+    "createdAt": "2026-06-26T18:01:02.096Z",
+    "updatedAt": "2026-06-26T18:01:02.096Z"
+  },
+  {
+    "_id": "g7w1ig27p",
+    "studentId": "4fu7ubs2x",
+    "classId": "jcn4s6d99",
+    "date": "2026-06-21T06:30:00.000Z",
+    "status": "Present",
+    "createdAt": "2026-06-26T18:01:02.097Z",
+    "updatedAt": "2026-06-26T18:01:02.097Z"
+  }
+]

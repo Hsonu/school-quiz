@@ -1,0 +1,50 @@
+/* Responsive rules for the ERP system */
+
+@media (max-width: 991px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .sidebar-toggle-btn {
+    display: block;
+  }
+  
+  .navbar-left .sidebar-toggle-btn {
+    margin-right: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-navbar {
+    padding: 0 16px;
+  }
+  
+  .dashboard-body {
+    padding: 16px;
+  }
+  
+  .date-time-widget {
+    display: none;
+  }
+  
+  /* Make tables responsive */
+  .erp-table-container {
+    overflow-x: auto;
+  }
+  
+  .erp-table {
+    min-width: 600px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

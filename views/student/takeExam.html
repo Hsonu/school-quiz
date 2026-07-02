@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examination Session | QUIZGEN ERP</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+  <link href="/css/student.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Navbar Placeholder -->
+      <div id="navbar-container"></div>
+
+      <!-- Dashboard Panel Body -->
+      <div class="dashboard-body animated-fade">
+
+        <!-- Sticky Timer Header -->
+        <div
+          class="quiz-taker-header d-flex justify-content-between align-items-center mb-4 p-3 bg-light border rounded shadow-sm">
+          <div>
+            <h3 class="quiz-taker-title mb-1" id="exam-title">Loading Examination...</h3>
+            <span class="text-muted small" id="exam-subtitle">Syllabus Details | Total Questions: - | Marks: -</span>
+          </div>
+          <div class="quiz-timer-widget bg-dark text-white px-3 py-2 rounded d-flex align-items-center gap-2">
+            <i class="far fa-clock"></i>
+            <span id="timer-display" class="fw-bold fs-5">00:00</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Question Holder Panel -->
+          <div class="col-lg-8">
+            <div class="question-holder-card erp-card p-4 shadow-sm mb-4" style="background: white;">
+              <div class="question-text-block fs-5 fw-bold mb-4" id="question-text">
+                Loading examination question details...
+              </div>
+              <div class="quiz-options-list d-grid gap-3" id="options-holder">
+                <!-- Option selections rendered here -->
+              </div>
+            </div>
+
+            <!-- Navigation Actions -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <button class="btn btn-outline-primary" id="prev-question-btn" onclick="handleNextPrev('prev')" disabled>
+                <i class="fas fa-arrow-left"></i> Previous Question
+              </button>
+              <button class="btn btn-primary px-4" id="next-question-btn" onclick="handleNextPrev('next')">
+                Next Question <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Question Grid Sidebar Navigator -->
+          <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="erp-card shadow-sm">
+              <h5 class="mb-3"><i class="fas fa-list-ol text-primary me-2"></i> Questions Navigator</h5>
+              <hr class="border-color">
+              <div class="d-flex flex-wrap" id="question-nav-grid">
+                <!-- Loaded dynamically -->
+              </div>
+              <div class="mt-4 pt-3 border-top small text-muted">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="d-inline-block bg-primary text-white text-center rounded"
+                    style="width: 18px; height: 18px; font-size: 10px; line-height: 18px">#</span>
+                  <span>Active Question</span>
+                </div>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="d-inline-block bg-success text-white text-center rounded"
+                    style="width: 18px; height: 18px; font-size: 10px; line-height: 18px">#</span>
+                  <span>Attempted</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="d-inline-block border border-secondary text-center rounded"
+                    style="width: 18px; height: 18px; font-size: 10px; line-height: 18px">#</span>
+                  <span>Unattempted</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="dashboard-footer" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <!-- Submission Confirmation Modal -->
+  <div class="modal fade" id="submitConfirmationModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center p-5">
+          <i class="fas fa-question-circle text-primary mb-4" style="font-size: 60px"></i>
+          <h4 class="mb-2">Submit Examination Answers?</h4>
+          <p class="text-muted small mb-4">
+            Are you sure you want to finalize and submit your examination answers for grading? You cannot change your
+            choices once submitted.
+          </p>
+          <div class="d-flex justify-content-center gap-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Working</button>
+            <button type="button" class="btn btn-success px-4 py-2 fw-bold" onclick="submitExamAnswers(true)">Yes,
+              Submit Exam</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/takeExam.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(startExamSession, 400);
+    });
+  </script>
+</body>
+
+</html>

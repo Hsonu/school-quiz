@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Login | QUIZGEN ERP</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/login.css" rel="stylesheet">
+  <style>
+    /* Absolute overlay loading spinner styles */
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Loading Spinner Overlay -->
+  <div id="loading-overlay">
+    <div class="erp-spinner"></div>
+    <h5 class="text-primary fw-semibold mt-2">Authenticating credentials...</h5>
+  </div>
+
+  <div class="login-wrapper">
+    <!-- Left column: Banner info -->
+    <div class="login-left">
+      <div class="login-left-content">
+        <i class="fas fa-university text-white mb-3" style="font-size: 52px"></i>
+        <h1>QUIZGEN ERP</h1>
+        <p>
+          Welcome to the unified online learning management and assessment gateway. Authenticate your account to access
+          your personalized portal.
+        </p>
+        <div class="login-illustration">
+          <h5 class="text-white mb-2"><i class="fas fa-info-circle me-1"></i> Quick Tip</h5>
+          <p class="small mb-0 text-white-50">
+            Use the role tabs on the right to select whether you are signing in as a Teacher (to manage classes and quiz
+            pools) or a Student (to attempt quizzes).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column: Forms inputs -->
+    <div class="login-right">
+      <div class="login-form-container">
+        <!-- Logo and Home Redirect -->
+        <a href="/" class="text-decoration-none d-inline-flex align-items-center gap-2 mb-4">
+          <i class="fas fa-arrow-left text-primary-blue"></i>
+          <span class="small fw-bold" style="color: var(--primary-blue)">Back to Website</span>
+        </a>
+
+        <div class="login-header">
+          <h2>Sign In</h2>
+          <p>Access your <span id="selected-role-label" class="fw-semibold text-primary">Teacher</span> Portal</p>
+        </div>
+
+        <!-- Role Select Tabs -->
+        <div class="role-tabs">
+          <div class="role-tab active" data-role="teacher">
+            <i class="fas fa-user-tie me-1"></i> Teacher
+          </div>
+          <div class="role-tab" data-role="student">
+            <i class="fas fa-user-graduate me-1"></i> Student
+          </div>
+          <div class="role-tab" data-role="principal">
+            <i class="fas fa-university me-1"></i> Principal
+          </div>
+        </div>
+
+        <!-- Hidden input storing active role -->
+        <input type="hidden" id="login-role" value="teacher">
+
+        <form id="login-form">
+          <!-- Email input -->
+          <div class="form-group-custom">
+            <label for="email">Institutional Email</label>
+            <div class="input-icon-wrapper">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="email" class="form-control erp-input" placeholder="name@rajcomputer.com" required
+                autocomplete="email">
+            </div>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-group-custom">
+            <label for="password">Password</label>
+            <div class="input-icon-wrapper">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" class="form-control erp-input" placeholder="••••••••" required
+                autocomplete="current-password">
+            </div>
+          </div>
+
+          <!-- Form Options -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="rememberMe">
+              <label class="form-check-label small fw-medium" for="rememberMe" style="cursor: pointer">
+                Remember Me
+              </label>
+            </div>
+            <a href="#"
+              onclick="alert('Please contact the campus registrar or administration office to reset your password.')"
+              class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <!-- Actions -->
+          <button type="submit" class="btn-premium-primary w-100 btn-login-animated py-3 mb-4"
+            style="border-radius: var(--radius-sm)">
+            Sign In <i class="fas fa-sign-in-alt ms-1"></i>
+          </button>
+
+          <!-- Signup Redirections -->
+          <div class="text-center small text-muted" id="signup-redirection-container">
+            Don't have an account? <br>
+            <span id="signup-text-wrapper"><span class="text-secondary">Teacher accounts are created by
+                Admin.</span></span>
+          </div>
+
+          <!-- Owner Portal Link -->
+          <div class="text-center mt-3 small">
+            <a href="/owner/login" style="color: var(--primary-blue); font-weight: 600; text-decoration: none;">
+              <i class="fas fa-user-shield me-1"></i> Owner Portal Login
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- API and form JavaScript logic -->
+  <script src="/js/api.js"></script>
+  <script src="/js/login.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Adjust signup redirection link based on tab clicks
+    document.querySelectorAll('.role-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const role = tab.getAttribute('data-role');
+        const wrapper = document.getElementById('signup-text-wrapper');
+        if (wrapper) {
+          if (role === 'student') {
+            wrapper.innerHTML = `<a href="/student-signup" class="fw-bold" style="color: var(--primary-blue)">Register as a Student</a>`;
+          } else if (role === 'teacher') {
+            wrapper.innerHTML = `<span class="text-secondary">Teacher accounts are created by Admin.</span>`;
+          } else {
+            wrapper.innerHTML = `<span class="text-secondary">Principal accounts are created by Admin.</span>`;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Questions | QUIZGEN ERP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+  <link href="/css/teacher.css" rel="stylesheet">
+  <link href="/css/responsive.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="dashboard-container">
+    <div id="sidebar-container"></div>
+
+    <div class="main-content">
+      <div id="navbar-container"></div>
+
+      <div class="dashboard-body animated-fade">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2>Question Bank Library</h2>
+            <p class="text-muted small mb-0">Overview of all academic questions. Highlighted items denote correct answer
+              choices.</p>
+          </div>
+          <div>
+            <a href="/teacher/addQuestion" class="btn-premium-primary text-decoration-none">
+              <i class="fas fa-plus me-1"></i> Add Question
+            </a>
+          </div>
+        </div>
+
+        <div class="erp-card">
+          <div class="erp-table-container">
+            <table class="erp-table">
+              <thead>
+                <tr>
+                  <th style="width: 35%">Question Text</th>
+                  <th>Class</th>
+                  <th>Subject</th>
+                  <th style="width: 25%">Option Choices</th>
+                  <th>Points</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="questions-list">
+                <!-- Dynamically loaded questions -->
+                <tr>
+                  <td colspan="6" class="text-center py-4 text-muted">
+                    <div class="spinner-border spinner-border-sm text-primary mb-2"></div><br>Loading question bank
+                    database...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="dashboard-footer" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/teacher.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(loadQuestionsTable, 400);
+    });
+  </script>
+</body>
+
+</html>

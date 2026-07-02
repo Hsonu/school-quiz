@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="140dp"
+    android:height="140dp"
+    android:viewportWidth="140"
+    android:viewportHeight="140">
+
+    <!-- Large circle background -->
+    <path
+        android:fillColor="#EEF2FF"
+        android:pathData="M70,70m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0" />
+
+    <!-- WiFi body (crossed out) -->
+    <!-- Outer arc -->
+    <path
+        android:pathData="M40,55 Q70,30 100,55"
+        android:strokeWidth="4"
+        android:strokeColor="#94A3B8"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Middle arc -->
+    <path
+        android:pathData="M48,65 Q70,45 92,65"
+        android:strokeWidth="4"
+        android:strokeColor="#94A3B8"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Inner arc -->
+    <path
+        android:pathData="M56,75 Q70,60 84,75"
+        android:strokeWidth="4"
+        android:strokeColor="#94A3B8"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Center dot -->
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M70,85m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0" />
+
+    <!-- Cross line (diagonal slash) -->
+    <path
+        android:pathData="M45,90 L95,40"
+        android:strokeWidth="4"
+        android:strokeColor="#EF4444"
+        android:strokeLineCap="round" />
+
+    <!-- Exclamation mark -->
+    <path
+        android:fillColor="#EF4444"
+        android:pathData="M68,100 L72,100 L72,108 L68,108 Z" />
+    <path
+        android:fillColor="#EF4444"
+        android:pathData="M70,113m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+
+</vector>

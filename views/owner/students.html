@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Students | QUIZGEN ERP</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+  <style>
+    .filter-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Navbar Placeholder -->
+      <div id="navbar-container"></div>
+
+      <!-- Content Body -->
+      <div class="dashboard-body animated-fade">
+
+        <div class="row g-4 align-items-center mb-4">
+          <div class="col-sm-8">
+            <h2 class="mb-1">Student Directory</h2>
+            <p class="text-muted small mb-0">Administer student database, audit profiles, inspect result matrices, and
+              log daily attendance sheets.</p>
+          </div>
+          <div class="col-sm-4 text-sm-end d-flex gap-2 justify-content-sm-end">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#attendanceModal">
+              <i class="fas fa-calendar-check me-1"></i> Attendance Portal
+            </button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+              <i class="fas fa-plus-circle me-1"></i> Add Student
+            </button>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-bar shadow-sm">
+          <form id="filter-form" class="row g-3 align-items-end">
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold text-muted">Search Name / Roll No / Email</label>
+              <input type="text" id="search-input" class="form-control" placeholder="Search...">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold text-muted">Class/Grade</label>
+              <select id="class-filter" class="form-select">
+                <option value="">All Classes</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold text-muted">Status</label>
+              <select id="status-filter" class="form-select">
+                <option value="">All Statuses</option>
+                <option value="active">Active Only</option>
+                <option value="inactive">Deactivated Only</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button type="button" id="reset-filters" class="btn btn-outline-secondary w-100"><i
+                  class="fas fa-undo me-1"></i> Reset</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Student Table -->
+        <div class="erp-card p-0 overflow-hidden shadow-sm">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0" id="students-table">
+              <thead class="table-light">
+                <tr>
+                  <th style="cursor: pointer;" data-sort="name">Student Name <i
+                      class="fas fa-sort ms-1 small text-muted"></i></th>
+                  <th style="cursor: pointer;" data-sort="rollNo">Roll Number <i
+                      class="fas fa-sort ms-1 small text-muted"></i></th>
+                  <th>Email</th>
+                  <th>Class / Grade</th>
+                  <th>Status</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="students-tbody">
+                <tr>
+                  <td colspan="6" class="text-center py-4 text-muted">Gathering student database...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Pagination -->
+          <div class="d-flex justify-content-between align-items-center p-3 border-top border-color">
+            <span class="small text-muted" id="table-info">Showing 0 of 0 entries</span>
+            <nav>
+              <ul class="pagination pagination-sm mb-0" id="pagination-controls">
+                <!-- Dynamic controls -->
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Add Student Modal -->
+      <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content text-dark">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold"><i class="fas fa-user-plus me-1 text-primary"></i> Create Student Account
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="add-student-form">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Full Name</label>
+                  <input type="text" id="add-name" class="form-control" required placeholder="e.g. Peter Parker">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Institutional Email</label>
+                  <input type="email" id="add-email" class="form-control" required placeholder="peter@rajcomputer.com">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Default Password</label>
+                  <input type="password" id="add-password" class="form-control" required minlength="6"
+                    placeholder="Min 6 characters">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Class/Grade Section</label>
+                  <select id="add-class" class="form-select" required></select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Roll Number</label>
+                  <input type="text" id="add-rollNo" class="form-control" required placeholder="e.g. RC-2026-042">
+                </div>
+                <div class="mt-4 text-end">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Student Modal -->
+      <div class="modal fade" id="editStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content text-dark">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold"><i class="fas fa-user-edit me-1 text-primary"></i> Edit Student</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="edit-student-form">
+                <input type="hidden" id="edit-id">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Full Name</label>
+                  <input type="text" id="edit-name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Institutional Email</label>
+                  <input type="email" id="edit-email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Class/Grade Section</label>
+                  <select id="edit-class" class="form-select" required></select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Roll Number</label>
+                  <input type="text" id="edit-rollNo" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Account Status</label>
+                  <select id="edit-status" class="form-select">
+                    <option value="true">Active / Enabled</option>
+                    <option value="false">Deactivated / Disabled</option>
+                  </select>
+                </div>
+                <div class="mt-4 text-end">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Profile Modal -->
+      <div class="modal fade" id="studentProfileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content text-dark">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title fw-bold"><i class="fas fa-id-card me-1"></i> Student Assessment Profile</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row mb-4">
+                <div class="col-md-6 border-end border-color">
+                  <h5 class="fw-bold mb-3 text-primary">Biographical Details</h5>
+                  <table class="table table-sm table-borderless">
+                    <tr>
+                      <td class="text-muted w-25">Name:</td>
+                      <td class="fw-bold" id="prof-name">-</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Roll No:</td>
+                      <td class="fw-bold" id="prof-roll">-</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Class:</td>
+                      <td class="fw-bold" id="prof-class">-</td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">Email:</td>
+                      <td id="prof-email">-</td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="col-md-6">
+                  <h5 class="fw-bold mb-3 text-primary">Metrics Overview</h5>
+                  <div class="row text-center">
+                    <div class="col-6 mb-3">
+                      <div class="p-2 border rounded">
+                        <small class="text-muted d-block">Attendance</small>
+                        <h4 class="fw-bold text-success" id="prof-att-pct">-</h4>
+                      </div>
+                    </div>
+                    <div class="col-6 mb-3">
+                      <div class="p-2 border rounded">
+                        <small class="text-muted d-block">Result Status</small>
+                        <h4 class="fw-bold text-primary" id="prof-result-status">-</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabs -->
+              <ul class="nav nav-tabs mb-3" id="profileTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="results-tab" data-bs-toggle="tab" data-bs-target="#results-panel"
+                    type="button" role="tab">Academic Results</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="att-tab" data-bs-toggle="tab" data-bs-target="#att-panel" type="button"
+                    role="tab">Attendance History</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="profileTabContent">
+                <div class="tab-pane fade show active" id="results-panel" role="tabpanel">
+                  <div class="table-responsive">
+                    <table class="table table-sm table-striped">
+                      <thead>
+                        <tr>
+                          <th>Assessment</th>
+                          <th>Score</th>
+                          <th>Percentage</th>
+                          <th>Status</th>
+                          <th>Date Attempted</th>
+                        </tr>
+                      </thead>
+                      <tbody id="prof-results-tbody">
+                        <tr>
+                          <td colspan="5" class="text-center text-muted">No assessment results.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="att-panel" role="tabpanel">
+                  <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                    <table class="table table-sm table-striped">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Attendance Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="prof-att-tbody">
+                        <tr>
+                          <td colspan="2" class="text-center text-muted">No attendance logs.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attendance Modal -->
+      <div class="modal fade" id="attendanceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content text-dark">
+            <div class="modal-header bg-success text-white">
+              <h5 class="modal-title fw-bold"><i class="fas fa-calendar-check me-1"></i> Class Attendance Registry</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="attendance-setup-form" class="row g-3 align-items-end mb-4 border-bottom pb-4">
+                <div class="col-md-5">
+                  <label class="form-label small fw-semibold">Class Section</label>
+                  <select id="att-class-select" class="form-select" required>
+                    <option value="" disabled selected>Select class...</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-semibold">Date</label>
+                  <input type="date" id="att-date-input" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                  <button type="submit" class="btn btn-success w-100"><i class="fas fa-sync me-1"></i> Load
+                    Students</button>
+                </div>
+              </form>
+
+              <!-- Attendance Roster -->
+              <form id="attendance-save-form" style="display: none;">
+                <div class="table-responsive mb-3" style="max-height: 350px;">
+                  <table class="table table-striped align-middle">
+                    <thead>
+                      <tr>
+                        <th>Student Name</th>
+                        <th>Roll Number</th>
+                        <th class="text-center">Present</th>
+                        <th class="text-center">Absent</th>
+                        <th class="text-center">Late</th>
+                      </tr>
+                    </thead>
+                    <tbody id="attendance-roster-tbody"></tbody>
+                  </table>
+                </div>
+                <div class="text-end">
+                  <button type="submit" class="btn btn-primary px-4">Submit Attendance Sheet</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer-container" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <!-- API and layouts scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let allStudents = [];
+    let filteredStudents = [];
+    let classesList = [];
+
+    // Filter states
+    let searchVal = '';
+    let classFilterVal = '';
+    let statusFilterVal = '';
+
+    // Sort states
+    let sortColumn = 'name';
+    let sortAsc = true;
+
+    // Pagination states
+    let currentPage = 1;
+    const rowsPerPage = 7;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Set default attendance date to today
+      document.getElementById('att-date-input').value = new Date().toISOString().split('T')[0];
+
+      await loadClasses();
+      await loadStudents();
+
+      // Filters
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        searchVal = e.target.value.toLowerCase().trim();
+        applyFilters();
+      });
+      document.getElementById('class-filter').addEventListener('change', (e) => {
+        classFilterVal = e.target.value;
+        applyFilters();
+      });
+      document.getElementById('status-filter').addEventListener('change', (e) => {
+        statusFilterVal = e.target.value;
+        applyFilters();
+      });
+      document.getElementById('reset-filters').addEventListener('click', () => {
+        document.getElementById('filter-form').reset();
+        searchVal = '';
+        classFilterVal = '';
+        statusFilterVal = '';
+        applyFilters();
+      });
+
+      // Sorting
+      document.querySelectorAll('#students-table th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+          const col = th.getAttribute('data-sort');
+          if (sortColumn === col) {
+            sortAsc = !sortAsc;
+          } else {
+            sortColumn = col;
+            sortAsc = true;
+          }
+          applyFilters();
+        });
+      });
+
+      // Add Student Submit
+      document.getElementById('add-student-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+          name: document.getElementById('add-name').value.trim(),
+          email: document.getElementById('add-email').value.trim(),
+          password: document.getElementById('add-password').value,
+          classId: document.getElementById('add-class').value,
+          rollNo: document.getElementById('add-rollNo').value.trim()
+        };
+
+        try {
+          const res = await api.post('/owner/students', data);
+          if (res && res.success) {
+            showToast('Student account created successfully.', 'success');
+            bootstrap.Modal.getInstance(document.getElementById('addStudentModal')).hide();
+            document.getElementById('add-student-form').reset();
+            await loadStudents();
+          } else {
+            showToast(res.message || 'Error creating student.', 'danger');
+          }
+        } catch (err) {
+          showToast('Failed to connect to server.', 'danger');
+        }
+      });
+
+      // Edit Student Submit
+      document.getElementById('edit-student-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-id').value;
+        const data = {
+          name: document.getElementById('edit-name').value.trim(),
+          email: document.getElementById('edit-email').value.trim(),
+          classId: document.getElementById('edit-class').value,
+          rollNo: document.getElementById('edit-rollNo').value.trim(),
+          isActive: document.getElementById('edit-status').value === 'true'
+        };
+
+        try {
+          const res = await api.put(`/owner/students/${id}`, data);
+          if (res && res.success) {
+            showToast('Student details updated successfully.', 'success');
+            bootstrap.Modal.getInstance(document.getElementById('editStudentModal')).hide();
+            await loadStudents();
+          } else {
+            showToast(res.message || 'Failed to update student.', 'danger');
+          }
+        } catch (err) {
+          showToast('Error saving changes.', 'danger');
+        }
+      });
+
+      // Attendance load students
+      document.getElementById('attendance-setup-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const classId = document.getElementById('att-class-select').value;
+        const classStudents = allStudents.filter(s => String(s.classId) === String(classId));
+
+        const roster = document.getElementById('attendance-roster-tbody');
+        roster.innerHTML = '';
+
+        if (classStudents.length === 0) {
+          roster.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No students registered in this class.</td></tr>';
+          document.getElementById('attendance-save-form').style.display = 'none';
+          return;
+        }
+
+        classStudents.forEach(s => {
+          roster.innerHTML += `
+            <tr data-student-id="${s.id}">
+              <td class="fw-semibold">${s.name}</td>
+              <td><code>${s.rollNo}</code></td>
+              <td class="text-center"><input type="radio" name="att-${s.id}" value="Present" checked></td>
+              <td class="text-center"><input type="radio" name="att-${s.id}" value="Absent"></td>
+              <td class="text-center"><input type="radio" name="att-${s.id}" value="Late"></td>
+            </tr>
+          `;
+        });
+
+        document.getElementById('attendance-save-form').style.display = 'block';
+      });
+
+      // Attendance Save Form
+      document.getElementById('attendance-save-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const classId = document.getElementById('att-class-select').value;
+        const date = document.getElementById('att-date-input').value;
+        const rows = document.querySelectorAll('#attendance-roster-tbody tr[data-student-id]');
+
+        const records = Array.from(rows).map(row => {
+          const studentId = row.getAttribute('data-student-id');
+          const status = row.querySelector(`input[name="att-${studentId}"]:checked`).value;
+          return { studentId, status };
+        });
+
+        try {
+          const res = await api.post('/owner/attendance', { classId, date, records });
+          if (res && res.success) {
+            showToast('Attendance registry logged successfully.', 'success');
+            bootstrap.Modal.getInstance(document.getElementById('attendanceModal')).hide();
+            document.getElementById('attendance-roster-tbody').innerHTML = '';
+            document.getElementById('attendance-save-form').style.display = 'none';
+            document.getElementById('attendance-setup-form').reset();
+            document.getElementById('att-date-input').value = new Date().toISOString().split('T')[0];
+          } else {
+            showToast('Failed to save attendance roster.', 'danger');
+          }
+        } catch (err) {
+          showToast('Error connecting to server.', 'danger');
+        }
+      });
+
+      // Load footer
+      fetch('/partials/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('footer-container').innerHTML = html;
+        });
+    });
+
+    async function loadClasses() {
+      try {
+        const res = await api.get('/owner/classes');
+        if (res && res.success) {
+          classesList = res.data;
+          const selectFilter = document.getElementById('class-filter');
+          const selectAdd = document.getElementById('add-class');
+          const selectEdit = document.getElementById('edit-class');
+          const selectAtt = document.getElementById('att-class-select');
+
+          selectFilter.innerHTML = '<option value="">All Classes</option>';
+          selectAdd.innerHTML = '';
+          selectEdit.innerHTML = '';
+          selectAtt.innerHTML = '<option value="" disabled selected>Select class...</option>';
+
+          classesList.forEach(c => {
+            selectFilter.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+            selectAdd.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+            selectEdit.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+            selectAtt.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+          });
+        }
+      } catch (err) {
+        console.error('Error loading classes:', err);
+      }
+    }
+
+    async function loadStudents() {
+      try {
+        const res = await api.get('/owner/students');
+        if (res && res.success) {
+          allStudents = res.data;
+          applyFilters();
+        }
+      } catch (err) {
+        showToast('Error loading student database.', 'danger');
+      }
+    }
+
+    function applyFilters() {
+      filteredStudents = allStudents.filter(s => {
+        const matchesSearch = s.name.toLowerCase().includes(searchVal) || s.rollNo.toLowerCase().includes(searchVal) || s.email.toLowerCase().includes(searchVal);
+        const matchesClass = !classFilterVal || String(s.classId) === String(classFilterVal);
+
+        let matchesStatus = true;
+        if (statusFilterVal === 'active') matchesStatus = s.isActive;
+        else if (statusFilterVal === 'inactive') matchesStatus = !s.isActive;
+
+        return matchesSearch && matchesClass && matchesStatus;
+      });
+
+      filteredStudents.sort((a, b) => {
+        let valA = a[sortColumn] || '';
+        let valB = b[sortColumn] || '';
+        if (typeof valA === 'string') {
+          return sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        }
+        return sortAsc ? (valA - valB) : (valB - valA);
+      });
+
+      // Update table sorting icons
+      document.querySelectorAll('#students-table th[data-sort]').forEach(th => {
+        const col = th.getAttribute('data-sort');
+        const icon = th.querySelector('i');
+        if (col === sortColumn) {
+          icon.className = sortAsc ? 'fas fa-sort-up ms-1 text-primary' : 'fas fa-sort-down ms-1 text-primary';
+        } else {
+          icon.className = 'fas fa-sort ms-1 text-muted small';
+        }
+      });
+
+      currentPage = 1;
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('students-tbody');
+      tbody.innerHTML = '';
+
+      if (filteredStudents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No students found matching filters.</td></tr>`;
+        document.getElementById('table-info').textContent = 'Showing 0 of 0 entries';
+        document.getElementById('pagination-controls').innerHTML = '';
+        return;
+      }
+
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const endIndex = Math.min(startIndex + rowsPerPage, filteredStudents.length);
+      const pageStudents = filteredStudents.slice(startIndex, endIndex);
+
+      pageStudents.forEach(s => {
+        const statusLabel = s.isActive
+          ? '<span class="badge bg-success"><i class="fas fa-check me-1"></i> Active</span>'
+          : '<span class="badge bg-danger"><i class="fas fa-times me-1"></i> Inactive</span>';
+
+        tbody.innerHTML += `
+          <tr>
+            <td>
+              <div class="fw-semibold">${s.name}</div>
+            </td>
+            <td><code>${s.rollNo}</code></td>
+            <td>${s.email}</td>
+            <td><span class="badge bg-primary">${s.className}</span></td>
+            <td>${statusLabel}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-info me-1" onclick="openProfileModal('${s.id}')" title="Student Profile"><i class="fas fa-id-card"></i></button>
+              <button class="btn btn-sm btn-outline-primary me-1" onclick="openEditModal('${s.id}')" title="Edit Profile"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent('${s.id}')" title="Delete Student"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('table-info').textContent = `Showing ${startIndex + 1} to ${endIndex} of ${filteredStudents.length} entries`;
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const controls = document.getElementById('pagination-controls');
+      controls.innerHTML = '';
+
+      const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+      if (totalPages <= 1) return;
+
+      controls.innerHTML += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+          <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Prev</a>
+        </li>
+      `;
+
+      for (let i = 1; i <= totalPages; i++) {
+        controls.innerHTML += `
+          <li class="page-item ${currentPage === i ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+          </li>
+        `;
+      }
+
+      controls.innerHTML += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+          <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>
+        </li>
+      `;
+    }
+
+    function changePage(page) {
+      const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+      if (page < 1 || page > totalPages) return;
+      currentPage = page;
+      renderTable();
+    }
+
+    function openEditModal(id) {
+      const s = allStudents.find(item => String(item.id) === String(id));
+      if (!s) return;
+
+      document.getElementById('edit-id').value = s.id;
+      document.getElementById('edit-name').value = s.name;
+      document.getElementById('edit-email').value = s.email;
+      document.getElementById('edit-rollNo').value = s.rollNo;
+      document.getElementById('edit-class').value = s.classId;
+      document.getElementById('edit-status').value = String(s.isActive);
+
+      new bootstrap.Modal(document.getElementById('editStudentModal')).show();
+    }
+
+    async function openProfileModal(id) {
+      try {
+        const res = await api.get(`/owner/students/${id}/profile-data`);
+        if (res && res.success) {
+          const profile = res.data.profile;
+          const results = res.data.results;
+          const attendance = res.data.attendance;
+
+          // Biographical
+          document.getElementById('prof-name').textContent = profile.name;
+          document.getElementById('prof-roll').textContent = profile.rollNo;
+          document.getElementById('prof-class').textContent = profile.className;
+          document.getElementById('prof-email').textContent = profile.email;
+
+          // Stats
+          let presentCount = attendance.filter(a => a.status === 'Present' || a.status === 'Late').length;
+          let attPct = attendance.length > 0 ? Math.round((presentCount / attendance.length) * 100) : 100;
+          document.getElementById('prof-att-pct').textContent = `${attPct}%`;
+
+          let passRatio = results.length > 0 ? results.filter(r => r.status === 'Pass').length + ' Pass / ' + results.length + ' Total' : 'No Attempts';
+          document.getElementById('prof-result-status').textContent = passRatio;
+
+          // Results Roster
+          const resTbody = document.getElementById('prof-results-tbody');
+          resTbody.innerHTML = '';
+          if (results.length > 0) {
+            results.forEach(r => {
+              const statusBadge = r.status === 'Pass' ? '<span class="badge bg-success">Pass</span>' : '<span class="badge bg-danger">Fail</span>';
+              resTbody.innerHTML += `
+                <tr>
+                  <td><strong>${r.assessmentTitle}</strong></td>
+                  <td>${r.score}</td>
+                  <td>${r.percentage}%</td>
+                  <td>${statusBadge}</td>
+                  <td>${new Date(r.date).toLocaleDateString()}</td>
+                </tr>
+              `;
+            });
+          } else {
+            resTbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-3">No quizzes or exams attempted.</td></tr>';
+          }
+
+          // Attendance Roster
+          const attTbody = document.getElementById('prof-att-tbody');
+          attTbody.innerHTML = '';
+          if (attendance.length > 0) {
+            attendance.forEach(a => {
+              let labelClass = 'bg-success';
+              if (a.status === 'Absent') labelClass = 'bg-danger';
+              if (a.status === 'Late') labelClass = 'bg-warning text-dark';
+              attTbody.innerHTML += `
+                <tr>
+                  <td>${new Date(a.date).toLocaleDateString()}</td>
+                  <td><span class="badge ${labelClass}">${a.status}</span></td>
+                </tr>
+              `;
+            });
+          } else {
+            attTbody.innerHTML = '<tr><td colspan="2" class="text-center text-muted py-3">No attendance records logged.</td></tr>';
+          }
+
+          new bootstrap.Modal(document.getElementById('studentProfileModal')).show();
+        }
+      } catch (err) {
+        showToast('Error loading student profile.', 'danger');
+      }
+    }
+
+    async function deleteStudent(id) {
+      if (!confirm('Are you sure you want to permanently delete this student account? This will erase all results and attendance logs.')) return;
+      try {
+        const res = await api.delete(`/owner/students/${id}`);
+        if (res && res.success) {
+          showToast('Student deleted successfully.', 'success');
+          await loadStudents();
+        } else {
+          showToast('Failed to delete student.', 'danger');
+        }
+      } catch (err) {
+        showToast('Server error.', 'danger');
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      let container = document.querySelector('.toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+      }
+
+      const toast = document.createElement('div');
+      toast.className = `erp-toast toast-${type}`;
+      const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+      toast.innerHTML = `
+        <i class="fas ${icon}" style="color: var(--${type === 'success' ? 'success' : 'danger'})"></i>
+        <span style="font-weight: 500">${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+
+</html>

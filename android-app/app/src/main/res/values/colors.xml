@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- QUIZGEN Brand Colors -->
+    <color name="primary">#2563EB</color>
+    <color name="primary_dark">#1e3a8a</color>
+    <color name="primary_light">#DBEAFE</color>
+    <color name="accent">#F59E0B</color>
+    <color name="accent_dark">#D97706</color>
+
+    <!-- Surfaces -->
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_dark">#0F172A</color>
+    <color name="background">#F8FAFC</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1E293B</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="text_hint">#94A3B8</color>
+
+    <!-- Status Colors -->
+    <color name="success">#10B981</color>
+    <color name="error">#EF4444</color>
+    <color name="warning">#F59E0B</color>
+
+    <!-- Splash -->
+    <color name="splash_start">#2563EB</color>
+    <color name="splash_end">#1e3a8a</color>
+</resources>

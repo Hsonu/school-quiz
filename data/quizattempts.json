@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "fzh3edb23",
+    "quizId": "hvhkje2nz",
+    "studentId": "4fu7ubs2x",
+    "answers": [
+      {
+        "questionId": "ckhcmvtqn",
+        "selectedAnswer": 2,
+        "isCorrect": true
+      },
+      {
+        "questionId": "bfpmcjhzi",
+        "selectedAnswer": 0,
+        "isCorrect": true
+      },
+      {
+        "questionId": "jhor6fr4k",
+        "selectedAnswer": 0,
+        "isCorrect": false
+      }
+    ],
+    "score": 3,
+    "totalQuestions": 3,
+    "timeTaken": 245,
+    "completedAt": "2026-06-26T14:01:02.090Z",
+    "createdAt": "2026-06-26T18:01:02.090Z",
+    "updatedAt": "2026-06-26T18:01:02.090Z"
+  }
+]

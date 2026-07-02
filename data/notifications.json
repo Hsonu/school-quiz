@@ -1,0 +1,22 @@
+[
+  {
+    "_id": "ibsuscopd",
+    "title": "Term Examination Schedule",
+    "message": "The final term examinations are starting from next week. Please review syllabus modules.",
+    "recipientRole": "all",
+    "senderId": "gdint0fha",
+    "senderRole": "owner",
+    "createdAt": "2026-06-26T18:01:02.098Z",
+    "updatedAt": "2026-06-26T18:01:02.098Z"
+  },
+  {
+    "_id": "dyctmetix",
+    "title": "Class Project Assignment",
+    "message": "Computer Science assignment must be submitted before Friday.",
+    "recipientRole": "student",
+    "senderId": "lt2pdhsf6",
+    "senderRole": "teacher",
+    "createdAt": "2026-06-26T18:01:02.099Z",
+    "updatedAt": "2026-06-26T18:01:02.099Z"
+  }
+]

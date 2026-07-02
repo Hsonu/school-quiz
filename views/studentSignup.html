@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration | QUIZGEN ERP</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/login.css" rel="stylesheet">
+  <style>
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Loading Spinner Overlay -->
+  <div id="loading-overlay">
+    <div class="erp-spinner"></div>
+    <h5 class="text-primary fw-semibold mt-2">Creating your account...</h5>
+  </div>
+
+  <div class="login-wrapper">
+    <!-- Left column: Info block -->
+    <div class="login-left">
+      <div class="login-left-content">
+        <i class="fas fa-university text-white mb-3" style="font-size: 52px"></i>
+        <h1>QUIZGEN ERP</h1>
+        <p>
+          Student assessment and reporting portal registration. Join your assigned classroom and review your grades.
+        </p>
+        <div class="login-illustration">
+          <h5 class="text-white mb-2"><i class="fas fa-info-circle me-1"></i> Roll Number Notice</h5>
+          <p class="small mb-0 text-white-50">
+            Please use your official Roll Number assigned by the campus administration to ensure proper link with your
+            academic record.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column: Inputs Form -->
+    <div class="login-right">
+      <div class="login-form-container">
+        <a href="/login" class="text-decoration-none d-inline-flex align-items-center gap-2 mb-4">
+          <i class="fas fa-arrow-left text-primary-blue"></i>
+          <span class="small fw-bold" style="color: var(--primary-blue)">Back to Login</span>
+        </a>
+
+        <div class="login-header">
+          <h2 class="fw-bold mb-2">Student Signup</h2>
+          <p class="text-muted mb-4">Create your online examination profile</p>
+        </div>
+
+        <form id="student-signup-form">
+          <!-- Full Name -->
+          <div class="form-group-custom">
+            <label for="name">Full Name</label>
+            <div class="input-icon-wrapper">
+              <i class="fas fa-user"></i>
+              <input type="text" id="name" class="form-control erp-input" placeholder="Jane Doe" required>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group-custom">
+            <label for="email">Personal Email</label>
+            <div class="input-icon-wrapper">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="email" class="form-control erp-input" placeholder="jane.doe@rajcomputer.com"
+                required autocomplete="email">
+            </div>
+          </div>
+
+          <!-- Class Dropdown (Populated Dynamically) -->
+          <div class="form-group-custom">
+            <label for="classSelect">Class / Grade Section</label>
+            <div class="input-icon-wrapper">
+              <i class="fas fa-school" style="z-index: 10"></i>
+              <select id="classSelect" class="form-control erp-input" style="padding-left: 44px" required>
+                <option value="" disabled selected>Loading classes...</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Roll Number -->
+          <div class="form-group-custom">
+            <label for="rollNo">Class Roll Number</label>
+            <div class="input-icon-wrapper">
+              <i class="fas fa-id-card"></i>
+              <input type="text" id="rollNo" class="form-control erp-input" placeholder="RC-2026-089" required>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group-custom">
+            <label for="password">Password</label>
+            <div class="input-icon-wrapper">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="password" class="form-control erp-input" placeholder="•••••••• (Min 6 chars)"
+                required autocomplete="new-password">
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <button type="submit" class="btn-premium-primary w-100 btn-login-animated py-3 mb-4 mt-2">
+            Create Account <i class="fas fa-user-plus ms-1"></i>
+          </button>
+
+          <div class="text-center small text-muted">
+            Already have an account? <a href="/login" class="fw-bold" style="color: var(--primary-blue)">Sign In
+              here</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/login.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

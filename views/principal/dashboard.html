@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Principal Dashboard | QUIZGEN ERP</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Navbar Placeholder -->
+      <div id="navbar-container"></div>
+
+      <!-- Dashboard Panel Body -->
+      <div class="dashboard-body animated-fade">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="mb-1">Academic Administration Panel</h2>
+            <p class="text-muted small mb-0">Overview of departments, courses, faculty directories, timetables, and exam
+              approval pipelines.</p>
+          </div>
+          <div>
+            <span class="badge bg-primary px-3 py-2">Role: College Principal</span>
+          </div>
+        </div>
+
+        <!-- Major Stats Grid -->
+        <div class="row g-4 mb-4">
+          <div class="col-xl-3 col-sm-6">
+            <div class="stat-card shadow-sm">
+              <div class="stat-info">
+                <span class="stat-label">Departments</span>
+                <h3 class="stat-value mb-0" id="count-depts">-</h3>
+              </div>
+              <div class="stat-icon-wrapper icon-blue">
+                <i class="fas fa-sitemap"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6">
+            <div class="stat-card shadow-sm">
+              <div class="stat-info">
+                <span class="stat-label">Courses Offered</span>
+                <h3 class="stat-value mb-0" id="count-courses">-</h3>
+              </div>
+              <div class="stat-icon-wrapper icon-green">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6">
+            <div class="stat-card shadow-sm">
+              <div class="stat-info">
+                <span class="stat-label">Total Subjects</span>
+                <h3 class="stat-value mb-0" id="count-subjects">-</h3>
+              </div>
+              <div class="stat-icon-wrapper icon-purple">
+                <i class="fas fa-book"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6">
+            <div class="stat-card shadow-sm bg-light-warning">
+              <div class="stat-info">
+                <span class="stat-label">Pending Exams</span>
+                <h3 class="stat-value mb-0 text-danger" id="count-pending-exams">-</h3>
+              </div>
+              <div class="stat-icon-wrapper icon-red">
+                <i class="fas fa-exclamation-circle text-danger"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Stats Grid -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="erp-card p-3 d-flex align-items-center justify-content-between shadow-sm">
+              <div>
+                <small class="text-muted d-block">Semesters Managed</small>
+                <span class="fw-bold fs-5" id="count-semesters">-</span>
+              </div>
+              <i class="fas fa-calendar-alt text-info fa-2x"></i>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="erp-card p-3 d-flex align-items-center justify-content-between shadow-sm">
+              <div>
+                <small class="text-muted d-block">Faculty Members</small>
+                <span class="fw-bold fs-5" id="count-teachers">-</span>
+              </div>
+              <i class="fas fa-user-tie text-success fa-2x"></i>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="erp-card p-3 d-flex align-items-center justify-content-between shadow-sm">
+              <div>
+                <small class="text-muted d-block">Enrolled Students</small>
+                <span class="fw-bold fs-5" id="count-students">-</span>
+              </div>
+              <i class="fas fa-user-graduate text-primary fa-2x"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="row">
+          <!-- Recent Activity Table -->
+          <div class="col-xl-8 mb-4">
+            <div class="erp-card shadow-sm" style="min-height: 380px;">
+              <h5 class="mb-4 text-primary"><i class="fas fa-history me-2"></i> Recent Student Quiz Results</h5>
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Student</th>
+                      <th>Assessment</th>
+                      <th>Grade Result</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-activity-list">
+                    <tr>
+                      <td colspan="4" class="text-center py-4 text-muted">Loading activities...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shortcuts menu -->
+          <div class="col-xl-4 mb-4">
+            <div class="erp-card shadow-sm">
+              <h5 class="mb-3 text-primary"><i class="fas fa-directions me-2"></i> Academic Shortcuts</h5>
+              <div class="d-grid gap-2">
+                <a href="/principal/departments" class="btn btn-outline-primary text-start px-3 py-2"><i
+                    class="fas fa-sitemap me-2"></i> Departments Portal</a>
+                <a href="/principal/courses" class="btn btn-outline-success text-start px-3 py-2"><i
+                    class="fas fa-graduation-cap me-2"></i> Courses Wizard</a>
+                <a href="/principal/subjects" class="btn btn-outline-purple text-start px-3 py-2"><i
+                    class="fas fa-book me-2"></i> Subjects Directory</a>
+                <a href="/principal/teachers" class="btn btn-outline-info text-start px-3 py-2"><i
+                    class="fas fa-user-tie me-2"></i> Faculty Directory</a>
+                <a href="/principal/students" class="btn btn-outline-secondary text-start px-3 py-2"><i
+                    class="fas fa-user-graduate me-2"></i> Students Directory</a>
+                <a href="/principal/approveExams" class="btn btn-outline-danger text-start px-3 py-2"><i
+                    class="fas fa-check-circle me-2"></i> Exam Approval Pipeline</a>
+                <a href="/principal/reports" class="btn btn-outline-dark text-start px-3 py-2"><i
+                    class="fas fa-file-alt me-2"></i> Dynamic Reports Center</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer class="footer-container" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <!-- API and layouts scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/principal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      principal.loadDashboard();
+    });
+  </script>
+</body>
+
+</html>

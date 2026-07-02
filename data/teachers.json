@@ -1,0 +1,13 @@
+[
+  {
+    "_id": "lt2pdhsf6",
+    "name": "Prof. Charles Xavier",
+    "email": "teacher@rajcomputer.com",
+    "password": "$2a$10$fVeFDqjFWpY5pyyy7.7IBuzf5Xt0IqR7hKXRmzWL6hACVLKyy10li",
+    "designation": "Professor of Genetics",
+    "profilePic": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop",
+    "isActive": true,
+    "createdAt": "2026-06-26T18:01:02.063Z",
+    "updatedAt": "2026-06-26T18:01:02.063Z"
+  }
+]
