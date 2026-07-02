@@ -166,11 +166,31 @@ exports.getResults = async (req, res, next) => {
     if (req.user.role === 'student') {
       // Fetch results of the student
       results = await Result.find({ studentId: req.user.id });
+    } else if (req.user.role === 'principal' || req.user.role === 'owner') {
+      // Principal/Owner can see all results
+      results = await Result.find({});
     } else {
-      // Fetch results of quizzes created by this teacher
-      const teacherQuizzes = await Quiz.find({ teacherId: req.user.id });
+      // Teacher: fetch results for BOTH quizzes AND exams created by this teacher
+      const [teacherQuizzes, teacherExams] = await Promise.all([
+        Quiz.find({ teacherId: req.user.id }),
+        Exam.find({ teacherId: req.user.id })
+      ]);
       const teacherQuizIds = teacherQuizzes.map(q => String(q._id));
-      results = await Result.find({ quizId: { $in: teacherQuizIds } });
+      const teacherExamIds = teacherExams.map(e => String(e._id));
+
+      // Build OR query to match either quizId or examId
+      const orConditions = [];
+      if (teacherQuizIds.length > 0) {
+        orConditions.push({ quizId: { $in: teacherQuizIds } });
+      }
+      if (teacherExamIds.length > 0) {
+        orConditions.push({ examId: { $in: teacherExamIds } });
+      }
+
+      if (orConditions.length > 0) {
+        results = await Result.find({ $or: orConditions });
+      }
+      // If no quizzes or exams exist, results stays empty []
     }
 
     // Enrich items in batch

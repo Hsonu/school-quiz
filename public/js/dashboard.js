@@ -177,30 +177,3 @@ function initDashboardWidgets(user) {
     });
   }
 }
-
-// Global UI helper methods
-function showToast(message, type = 'success') {
-  let container = document.querySelector('.toast-container');
-  if (!container) {
-    container = document.createElement('div');
-    container.className = 'toast-container';
-    document.body.appendChild(container);
-  }
-
-  const toast = document.createElement('div');
-  toast.className = `erp-toast toast-${type}`;
-
-  const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-  toast.innerHTML = `
-    <i class="fas ${icon}" style="color: var(--${type === 'success' ? 'success' : 'danger'})"></i>
-    <span style="font-weight: 500">${message}</span>
-  `;
-
-  container.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(10px)';
-    setTimeout(() => toast.remove(), 300);
-  }, 3500);
-}

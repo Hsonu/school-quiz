@@ -346,7 +346,8 @@ async function loadResultsRoster() {
       }
     }
   } catch (err) {
-    showToast('Failed to load quiz reports.', 'danger');
+    console.error('Results load error:', err);
+    showToast(err.message || 'Failed to load quiz reports.', 'danger');
   }
 }
 

@@ -12,8 +12,13 @@ const connectDB = async () => {
 
     console.log(`MongoDB Connected successfully: ${mongoose.connection.host}`);
   } catch (error) {
-    console.warn('\x1b[33m%s\x1b[0m', 'WARNING: Failed to connect to MongoDB. Falling back to local file-based JSON database (localDb).');
-    console.error(`Connection Error details: ${error.message}`);
+    console.error(`MongoDB Connection Error: ${error.message}`);
+    if (process.env.NODE_ENV === 'production') {
+      console.error('FATAL: Cannot start server without MongoDB in production. Exiting...');
+      process.exit(1);
+    } else {
+      console.warn('\x1b[33m%s\x1b[0m', 'WARNING: Failed to connect to MongoDB. Server running without database — API requests will fail.');
+    }
   }
 };
 

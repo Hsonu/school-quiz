@@ -53,8 +53,8 @@ exports.signup = async (req, res, next) => {
       classId,
       rollNo,
       departmentId: defaultDept ? String(defaultDept._id) : '',
-      courseId: defaultCourse ? String(defaultCourse.id) : '',
-      semesterId: defaultSem ? String(defaultSem.id) : '',
+      courseId: defaultCourse ? String(defaultCourse._id) : '',
+      semesterId: defaultSem ? String(defaultSem._id) : '',
       profilePic: ''
     });
 

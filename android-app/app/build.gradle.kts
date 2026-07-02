@@ -14,12 +14,11 @@ android {
         versionName = "1.0.0"
 
         // ============================================================
-        // >>> CHANGE THIS TO YOUR DEPLOYED SERVER URL <<<
-        // Example: "https://quizgen.yoursite.com"
+        // >>> DEPLOYED SERVER URL (Render Hosting) <<<
         // For local testing: "http://10.0.2.2:5050" (emulator)
         //                    "http://192.168.x.x:5050" (real device)
         // ============================================================
-        buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:5050\"")
+        buildConfigField("String", "BASE_URL", "\"https://school-quiz-kdwf.onrender.com\"")
     }
 
     buildTypes {

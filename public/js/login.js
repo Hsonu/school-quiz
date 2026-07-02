@@ -120,14 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Load classes for student signup dropdown selector
 async function loadClassOptions() {
   const select = document.getElementById('classSelect');
   if (!select) return;
 
   try {
-    const res = await fetch('/api/classes');
-    const response = await res.json();
+    const response = await api.get('/classes');
     if (response && response.success) {
       select.innerHTML = '<option value="" disabled selected>Choose your Class/Grade</option>';
       response.data.forEach(cls => {
@@ -139,7 +137,7 @@ async function loadClassOptions() {
   }
 }
 
-// Helpers: Spinners & Toasts
+// Helpers: Spinners
 function showSpinner() {
   const overlay = document.getElementById('loading-overlay');
   if (overlay) overlay.style.display = 'flex';
@@ -148,31 +146,4 @@ function showSpinner() {
 function hideSpinner() {
   const overlay = document.getElementById('loading-overlay');
   if (overlay) overlay.style.display = 'none';
-}
-
-function showToast(message, type = 'success') {
-  let container = document.querySelector('.toast-container');
-  if (!container) {
-    container = document.createElement('div');
-    container.className = 'toast-container';
-    document.body.appendChild(container);
-  }
-
-  const toast = document.createElement('div');
-  toast.className = `erp-toast toast-${type}`;
-  
-  const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-  toast.innerHTML = `
-    <i class="fas ${icon}" style="color: var(--${type === 'success' ? 'success' : 'danger'})"></i>
-    <span style="font-weight: 500">${message}</span>
-  `;
-
-  container.appendChild(toast);
-
-  // Fade out
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(10px)';
-    setTimeout(() => toast.remove(), 300);
-  }, 3500);
 }

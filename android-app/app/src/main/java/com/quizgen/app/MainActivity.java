@@ -153,11 +153,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Media settings
         settings.setMediaPlaybackRequiresUserGesture(false);
-        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
 
-        // Enable file upload
-        settings.setAllowFileAccessFromFileURLs(true);
-        settings.setAllowUniversalAccessFromFileURLs(true);
+        // Disable file URL access (not needed for remote HTTPS WebView)
+        settings.setAllowFileAccessFromFileURLs(false);
+        settings.setAllowUniversalAccessFromFileURLs(false);
 
         // Improved rendering
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);

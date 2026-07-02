@@ -102,3 +102,37 @@ const api = {
     return user;
   }
 };
+
+// =========================================================================
+// Shared Toast Notification Utility (available on all pages that include api.js)
+// =========================================================================
+function showToast(message, type = 'success') {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = `erp-toast toast-${type}`;
+
+  const icon = type === 'success' ? 'fa-check-circle'
+    : type === 'warning' ? 'fa-exclamation-triangle'
+    : 'fa-exclamation-circle';
+  const colorVar = type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'danger';
+
+  toast.innerHTML = `
+    <i class="fas ${icon}" style="color: var(--${colorVar})"></i>
+    <span style="font-weight: 500">${message}</span>
+  `;
+
+  container.appendChild(toast);
+
+  // Fade out
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(10px)';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
