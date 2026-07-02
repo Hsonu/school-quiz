@@ -10,9 +10,16 @@ const sendResponse = require('../utils/response');
 
 exports.createQuiz = async (req, res, next) => {
   try {
-    const { title, description, subjectId, classId, duration, questions } = req.body;
+    const { title, description, subjectId, classId, classIds, duration, questions } = req.body;
 
-    if (!title || !subjectId || !classId || !questions || !Array.isArray(questions) || questions.length === 0) {
+    let targetClassIds = [];
+    if (classIds && Array.isArray(classIds)) {
+      targetClassIds = classIds;
+    } else if (classId) {
+      targetClassIds = [classId];
+    }
+
+    if (!title || !subjectId || targetClassIds.length === 0 || !questions || !Array.isArray(questions) || questions.length === 0) {
       return sendResponse(res, 400, false, 'Title, Subject, Class, and at least one Question are required.');
     }
 
@@ -32,18 +39,20 @@ exports.createQuiz = async (req, res, next) => {
       }
     }
 
-    const newQuiz = await Quiz.create({
-      title,
-      description: description || '',
-      subjectId,
-      classId,
-      teacherId: req.user.id,
-      questions,
-      duration: Number(duration || 15),
-      totalMarks
-    });
+    const createdQuizzes = await Promise.all(targetClassIds.map(cId =>
+      Quiz.create({
+        title,
+        description: description || '',
+        subjectId,
+        classId: cId,
+        teacherId: req.user.id,
+        questions,
+        duration: Number(duration || 15),
+        totalMarks
+      })
+    ));
 
-    return sendResponse(res, 201, true, 'Quiz created successfully.', newQuiz);
+    return sendResponse(res, 201, true, 'Quiz created successfully.', createdQuizzes[0]);
   } catch (error) {
     next(error);
   }
