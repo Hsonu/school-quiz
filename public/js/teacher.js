@@ -145,19 +145,61 @@ async function loadSubjectSelector() {
   const select = document.getElementById('subjectSelect');
   if (!select) return;
 
-  // Load classes dropdown if present
+  // Load classes dropdown if present (Standard select option)
   const classSelect = document.getElementById('classSelect');
-  if (classSelect) {
+  if (classSelect && classSelect.tagName === 'SELECT') {
     try {
       const classesRes = await api.get('/classes');
       if (classesRes && classesRes.success) {
-        // Clear previous options
-        classSelect.innerHTML = classSelect.multiple ? '' : '<option value="" disabled selected>Select Target Class</option>';
-        classSelect.innerHTML += classesRes.data.map(cls => `<option value="${cls._id}">${cls.name}</option>`).join('');
+        classSelect.innerHTML = '<option value="" disabled selected>Select Target Class</option>' +
+          classesRes.data.map(cls => `<option value="${cls._id}">${cls.name}</option>`).join('');
       }
       classSelect.addEventListener('change', updateSubjectDropdownOptions);
     } catch (e) {
       console.error('Failed to load classes for selector:', e);
+    }
+  }
+
+  // Load classes custom checkboxes dropdown (Bootstrap list dropdown)
+  const classDropdownMenu = document.getElementById('classDropdownMenu');
+  if (classDropdownMenu) {
+    try {
+      const classesRes = await api.get('/classes');
+      if (classesRes && classesRes.success) {
+        classDropdownMenu.innerHTML = classesRes.data.map(cls => `
+          <li class="px-2 py-1">
+            <div class="form-check">
+              <input class="form-check-input class-checkbox" type="checkbox" value="${cls._id}" id="chk_${cls._id}" data-name="${cls.name}">
+              <label class="form-check-label text-dark small w-100 cursor-pointer" for="chk_${cls._id}">
+                ${cls.name}
+              </label>
+            </div>
+          </li>
+        `).join('');
+
+        const checkboxes = classDropdownMenu.querySelectorAll('.class-checkbox');
+        checkboxes.forEach(cb => {
+          cb.addEventListener('change', () => {
+            const selected = Array.from(checkboxes).filter(c => c.checked);
+            const selectedIds = selected.map(c => c.value);
+            const selectedNames = selected.map(c => c.getAttribute('data-name'));
+
+            const btn = document.getElementById('classDropdownBtn');
+            if (btn) {
+              btn.textContent = selectedNames.length > 0 ? selectedNames.join(', ') : 'Select Target Class(es)';
+            }
+
+            const hiddenInput = document.getElementById('classSelect');
+            if (hiddenInput) {
+              hiddenInput.value = selectedIds.join(',');
+            }
+
+            updateSubjectDropdownOptions();
+          });
+        });
+      }
+    } catch (e) {
+      console.error('Failed to load classes for dropdown list:', e);
     }
   }
 
@@ -184,10 +226,11 @@ function updateSubjectDropdownOptions() {
   }
 
   let selectedClasses = [];
-  if (classSelect.multiple) {
-    selectedClasses = Array.from(classSelect.selectedOptions).map(opt => opt.value);
-  } else {
+  if (classSelect.tagName === 'SELECT') {
     selectedClasses = classSelect.value ? [classSelect.value] : [];
+  } else {
+    // Hidden input (comma-separated string from checkboxes dropdown)
+    selectedClasses = classSelect.value ? classSelect.value.split(',') : [];
   }
 
   if (selectedClasses.length === 0) {
@@ -320,7 +363,14 @@ async function initQuizCreator() {
       const title = document.getElementById('quizTitle').value.trim();
       const description = document.getElementById('quizDesc').value.trim();
       const classSelect = document.getElementById('classSelect');
-      const selectedClasses = Array.from(classSelect.selectedOptions).map(opt => opt.value);
+      let selectedClasses = [];
+      if (classSelect) {
+        if (classSelect.tagName === 'SELECT') {
+          selectedClasses = Array.from(classSelect.selectedOptions).map(opt => opt.value);
+        } else {
+          selectedClasses = classSelect.value ? classSelect.value.split(',') : [];
+        }
+      }
       const subjectId = document.getElementById('subjectSelect').value;
       const duration = document.getElementById('quizDuration').value;
 
