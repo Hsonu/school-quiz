@@ -576,7 +576,8 @@ exports.getMyAssignedSubjects = async (req, res, next) => {
         courseId: s.courseId,
         courseName: course ? course.name : 'N/A',
         semesterId: s.semesterId,
-        semesterName: sem ? sem.name : 'N/A'
+        semesterName: sem ? sem.name : 'N/A',
+        classId: s.classId || ''
       });
     }
     return sendResponse(res, 200, true, 'Assigned subjects fetched.', result);

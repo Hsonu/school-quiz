@@ -139,6 +139,8 @@ async function loadQuestionsTable() {
   }
 }
 
+let allAssignedSubjects = [];
+
 async function loadSubjectSelector() {
   const select = document.getElementById('subjectSelect');
   if (!select) return;
@@ -149,9 +151,11 @@ async function loadSubjectSelector() {
     try {
       const classesRes = await api.get('/classes');
       if (classesRes && classesRes.success) {
-        classSelect.innerHTML = '<option value="" disabled selected>Select Target Class</option>' +
-          classesRes.data.map(cls => `<option value="${cls._id}">${cls.name}</option>`).join('');
+        // Clear previous options
+        classSelect.innerHTML = classSelect.multiple ? '' : '<option value="" disabled selected>Select Target Class</option>';
+        classSelect.innerHTML += classesRes.data.map(cls => `<option value="${cls._id}">${cls.name}</option>`).join('');
       }
+      classSelect.addEventListener('change', updateSubjectDropdownOptions);
     } catch (e) {
       console.error('Failed to load classes for selector:', e);
     }
@@ -160,13 +164,44 @@ async function loadSubjectSelector() {
   try {
     const data = await api.get('/academic/my-subjects');
     if (data && data.success) {
-      select.innerHTML = '<option value="" disabled selected>Choose a Subject</option>';
-      data.data.forEach(sub => {
-        select.innerHTML += `<option value="${sub.id || sub._id}">${sub.name} (${sub.courseName || 'N/A'} - ${sub.semesterName || 'N/A'})</option>`;
-      });
+      allAssignedSubjects = data.data;
+      updateSubjectDropdownOptions();
     }
   } catch (err) {
     console.error('Failed to load subjects options:', err);
+  }
+}
+
+function updateSubjectDropdownOptions() {
+  const select = document.getElementById('subjectSelect');
+  if (!select) return;
+
+  const classSelect = document.getElementById('classSelect');
+  if (!classSelect) {
+    select.innerHTML = '<option value="" disabled selected>Choose a Subject</option>' +
+      allAssignedSubjects.map(sub => `<option value="${sub.id || sub._id}">${sub.name} (${sub.courseName || 'N/A'} - ${sub.semesterName || 'N/A'})</option>`).join('');
+    return;
+  }
+
+  let selectedClasses = [];
+  if (classSelect.multiple) {
+    selectedClasses = Array.from(classSelect.selectedOptions).map(opt => opt.value);
+  } else {
+    selectedClasses = classSelect.value ? [classSelect.value] : [];
+  }
+
+  if (selectedClasses.length === 0) {
+    select.innerHTML = '<option value="" disabled selected>Choose a Subject (Select Class First)</option>';
+    return;
+  }
+
+  const filtered = allAssignedSubjects.filter(sub => selectedClasses.includes(String(sub.classId)));
+
+  if (filtered.length === 0) {
+    select.innerHTML = '<option value="" disabled selected>No subjects assigned for selected class(es)</option>';
+  } else {
+    select.innerHTML = '<option value="" disabled selected>Choose a Subject</option>' +
+      filtered.map(sub => `<option value="${sub.id || sub._id}">${sub.name} (${sub.courseName || 'N/A'} - ${sub.semesterName || 'N/A'})</option>`).join('');
   }
 }
 
@@ -213,6 +248,7 @@ async function addQuestion(e) {
       options.forEach((opt, idx) => document.getElementById(`opt${idx}`).value = '');
       radioButtons.forEach(rb => rb.checked = false);
       if (classSelect) classSelect.value = '';
+      updateSubjectDropdownOptions();
       if (document.getElementById('questions-list')) {
         loadQuestionsTable();
       }
@@ -237,21 +273,8 @@ async function deleteQuestion(id) {
 
 // Quiz Creation and compilation
 async function initQuizCreator() {
-  // Load subjects dropdown
+  // Load subjects dropdown (this also populates class list and binds change listeners)
   await loadSubjectSelector();
-
-  // Load classes dropdown
-  try {
-    const classSelect = document.getElementById('classSelect');
-    if (classSelect) {
-      const classesRes = await api.get('/classes');
-      if (classesRes && classesRes.success) {
-        classSelect.innerHTML = classesRes.data.map(cls => `<option value="${cls._id}">${cls.name}</option>`).join('');
-      }
-    }
-  } catch (e) {
-    console.error('Failed to load classes for selector:', e);
-  }
 
   // Handle subject change to load questions of selected subject
   const subjectSelect = document.getElementById('subjectSelect');
