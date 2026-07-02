@@ -214,9 +214,24 @@ async function deleteQuestion(id) {
 }
 
 // Quiz Creation and compilation
+// Quiz Creation and compilation
 async function initQuizCreator() {
   // Load subjects dropdown
   await loadSubjectSelector();
+
+  // Load classes dropdown
+  try {
+    const classSelect = document.getElementById('classSelect');
+    if (classSelect) {
+      const classesRes = await api.get('/classes');
+      if (classesRes && classesRes.success) {
+        classSelect.innerHTML = '<option value="" disabled selected>Select Target Class</option>' +
+          classesRes.data.map(cls => `<option value="${cls._id}">${cls.name}</option>`).join('');
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load classes for selector:', e);
+  }
 
   // Handle subject change to load questions of selected subject
   const subjectSelect = document.getElementById('subjectSelect');
@@ -261,19 +276,20 @@ async function initQuizCreator() {
 
       const title = document.getElementById('quizTitle').value.trim();
       const description = document.getElementById('quizDesc').value.trim();
+      const classId = document.getElementById('classSelect').value;
       const subjectId = document.getElementById('subjectSelect').value;
       const duration = document.getElementById('quizDuration').value;
 
       const checkedBoxes = document.querySelectorAll('input[name="quizQuestions"]:checked');
       const questions = Array.from(checkedBoxes).map(cb => cb.value);
 
-      if (!title || !subjectId || questions.length === 0) {
-        showToast('Please provide a title, subject, and select at least 1 question.', 'warning');
+      if (!title || !classId || !subjectId || questions.length === 0) {
+        showToast('Please provide a title, target class, subject, and select at least 1 question.', 'warning');
         return;
       }
 
       try {
-        const res = await api.post('/quizzes', { title, description, subjectId, duration, questions });
+        const res = await api.post('/quizzes', { title, description, classId, subjectId, duration, questions });
         if (res && res.success) {
           showToast('Quiz published successfully!', 'success');
           window.location.href = '/teacher/dashboard';

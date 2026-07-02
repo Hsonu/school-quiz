@@ -49,15 +49,22 @@
                 </div>
 
                 <div class="row mb-4">
+                  <!-- Class Selection -->
+                  <div class="col-md-4 mb-3 mb-md-0">
+                    <label class="form-label small fw-semibold">Target Class</label>
+                    <select id="classSelect" class="form-control erp-input" required>
+                      <option value="" disabled selected>Loading classes...</option>
+                    </select>
+                  </div>
                   <!-- Subject Selection -->
-                  <div class="col-md-6 mb-3 mb-md-0">
+                  <div class="col-md-4 mb-3 mb-md-0">
                     <label class="form-label small fw-semibold">Course Subject</label>
                     <select id="subjectSelect" class="form-control erp-input" required>
                       <option value="" disabled selected>Loading subjects...</option>
                     </select>
                   </div>
                   <!-- Duration -->
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <label class="form-label small fw-semibold">Timer Duration (Minutes)</label>
                     <input type="number" id="quizDuration" class="form-control erp-input" value="15" min="1" max="180"
                       required>

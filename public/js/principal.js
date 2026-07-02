@@ -1129,6 +1129,82 @@ const principal = {
         }
       });
     }
+  },
+
+  loadClassesPage: async () => {
+    const tbody = document.getElementById('classes-tbody');
+    const teacherSelect = document.getElementById('add-class-teacher');
+    if (!tbody) return;
+
+    // Load classes
+    try {
+      const res = await api.get('/classes');
+      if (res && res.success) {
+        if (res.data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-3">No classes registered yet.</td></tr>';
+        } else {
+          tbody.innerHTML = res.data.map(cls => `
+            <tr>
+              <td><strong>${cls.name}</strong></td>
+              <td>${cls.teacherName || 'System Admin'}</td>
+              <td><code>${cls._id || cls.id}</code></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-danger me-1" onclick="principal.deleteClass('${cls._id || cls.id}')">
+                  <i class="fas fa-trash-alt"></i> Delete
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+    } catch (err) {
+      tbody.innerHTML = `<tr><td colspan="4" class="text-center text-danger py-3">Failed to load classes: ${err.message}</td></tr>`;
+    }
+
+    // Load teachers selector
+    if (teacherSelect) {
+      try {
+        const tRes = await api.get('/principal/teachers');
+        if (tRes && tRes.success) {
+          teacherSelect.innerHTML = '<option value="" disabled selected>Select Class Teacher</option>' +
+            tRes.data.map(t => `<option value="${t.id || t._id}">${t.name} (${t.designation || 'Teacher'})</option>`).join('');
+        }
+      } catch (err) {
+        console.error('Failed to load teachers for class selector:', err);
+      }
+    }
+  },
+
+  createClass: async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('add-class-name').value.trim();
+    const teacherId = document.getElementById('add-class-teacher').value;
+
+    try {
+      const res = await api.post('/classes', { name, teacherId });
+      if (res && res.success) {
+        showToast('Class created successfully.', 'success');
+        document.getElementById('add-class-form').reset();
+        bootstrap.Modal.getInstance(document.getElementById('addClassModal')).hide();
+        await principal.loadClassesPage();
+      }
+    } catch (err) {
+      showToast(err.message, 'danger');
+    }
+  },
+
+  deleteClass: async (id) => {
+    if (!confirm('Are you absolutely sure you want to delete this class? This cannot be undone.')) return;
+
+    try {
+      const res = await api.delete(`/classes/${id}`);
+      if (res && res.success) {
+        showToast('Class deleted successfully.', 'success');
+        await principal.loadClassesPage();
+      }
+    } catch (err) {
+      showToast(err.message, 'danger');
+    }
   }
 };
 window.principal = principal;

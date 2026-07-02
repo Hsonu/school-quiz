@@ -102,6 +102,7 @@ app.get('/principal/departments', (req, res) => res.sendFile(path.join(__dirname
 app.get('/principal/courses', (req, res) => res.sendFile(path.join(__dirname, 'views', 'principal', 'courses.html')));
 app.get('/principal/semesters', (req, res) => res.sendFile(path.join(__dirname, 'views', 'principal', 'semesters.html')));
 app.get('/principal/subjects', (req, res) => res.sendFile(path.join(__dirname, 'views', 'principal', 'subjects.html')));
+app.get('/principal/classes', (req, res) => res.sendFile(path.join(__dirname, 'views', 'principal', 'classes.html')));
 app.get('/principal/teachers', (req, res) => res.sendFile(path.join(__dirname, 'views', 'principal', 'teachers.html')));
 app.get('/principal/students', (req, res) => res.sendFile(path.join(__dirname, 'views', 'principal', 'students.html')));
 app.get('/principal/timetable', (req, res) => res.sendFile(path.join(__dirname, 'views', 'principal', 'timetable.html')));

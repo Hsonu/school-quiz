@@ -46,3 +46,37 @@ exports.getClassById = async (req, res, next) => {
   }
 };
 
+exports.createClass = async (req, res, next) => {
+  try {
+    const { name, teacherId } = req.body;
+    if (!name || !teacherId) {
+      return sendResponse(res, 400, false, 'Class name and Teacher are required.');
+    }
+
+    const existingClass = await Class.findOne({ name });
+    if (existingClass) {
+      return sendResponse(res, 400, false, 'Class name already exists.');
+    }
+
+    const newClass = await Class.create({ name, teacherId });
+    return sendResponse(res, 201, true, 'Class created successfully.', newClass);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteClass = async (req, res, next) => {
+  try {
+    const classId = req.params.id;
+    const targetClass = await Class.findById(classId);
+    if (!targetClass) {
+      return sendResponse(res, 404, false, 'Class not found.');
+    }
+
+    await Class.findByIdAndDelete(classId);
+    return sendResponse(res, 200, true, 'Class deleted successfully.');
+  } catch (error) {
+    next(error);
+  }
+};
+

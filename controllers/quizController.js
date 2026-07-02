@@ -10,10 +10,10 @@ const sendResponse = require('../utils/response');
 
 exports.createQuiz = async (req, res, next) => {
   try {
-    const { title, description, subjectId, duration, questions } = req.body;
+    const { title, description, subjectId, classId, duration, questions } = req.body;
 
-    if (!title || !subjectId || !questions || !Array.isArray(questions) || questions.length === 0) {
-      return sendResponse(res, 400, false, 'Title, Subject, and at least one Question are required.');
+    if (!title || !subjectId || !classId || !questions || !Array.isArray(questions) || questions.length === 0) {
+      return sendResponse(res, 400, false, 'Title, Subject, Class, and at least one Question are required.');
     }
 
     const subject = await Subject.findById(subjectId);
@@ -36,7 +36,7 @@ exports.createQuiz = async (req, res, next) => {
       title,
       description: description || '',
       subjectId,
-      classId: subject.classId,
+      classId,
       teacherId: req.user.id,
       questions,
       duration: Number(duration || 15),

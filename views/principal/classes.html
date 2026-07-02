@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Classes | Principal Portal</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- Custom Styles -->
+  <link href="/css/style.css" rel="stylesheet">
+  <link href="/css/dashboard.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar Placeholder -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <!-- Navbar Placeholder -->
+      <div id="navbar-container"></div>
+
+      <!-- Dashboard Panel Body -->
+      <div class="dashboard-body animated-fade">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="mb-1">Manage College Classes</h2>
+            <p class="text-muted small mb-0">Create and delete class sections and assign class teachers.</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">
+              <i class="fas fa-plus-circle me-1"></i> Add Class
+            </button>
+          </div>
+        </div>
+
+        <!-- Data Card -->
+        <div class="erp-card p-0 shadow-sm overflow-hidden">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Class Name</th>
+                  <th>Class Teacher</th>
+                  <th>Class ID</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="classes-tbody">
+                <tr>
+                  <td colspan="4" class="text-center py-4 text-muted">Reading classes database...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Class Modal -->
+      <div class="modal fade" id="addClassModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content text-dark">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold"><i class="fas fa-plus-circle text-primary me-1"></i> Create Class</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="add-class-form">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Class Name</label>
+                  <input type="text" id="add-class-name" class="form-control" required placeholder="e.g. BCA 1st Year (Section A)">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold small">Class Teacher</label>
+                  <select id="add-class-teacher" class="form-select" required>
+                    <option value="" disabled selected>Select Class Teacher</option>
+                  </select>
+                </div>
+                <div class="mt-4 text-end">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Create Class</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer-container" id="footer-container"></footer>
+    </div>
+  </div>
+
+  <!-- API and layouts scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/principal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await principal.loadClassesPage();
+      document.getElementById('add-class-form').addEventListener('submit', principal.createClass);
+    });
+  </script>
+</body>
+</html>
