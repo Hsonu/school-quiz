@@ -144,11 +144,11 @@ async function loadSubjectSelector() {
   if (!select) return;
 
   try {
-    const data = await api.get('/subjects');
+    const data = await api.get('/academic/my-subjects');
     if (data && data.success) {
       select.innerHTML = '<option value="" disabled selected>Choose a Subject</option>';
       data.data.forEach(sub => {
-        select.innerHTML += `<option value="${sub.id}">${sub.name} (${sub.className}) (Teacher: ${sub.teacherName || 'System Admin'})</option>`;
+        select.innerHTML += `<option value="${sub.id || sub._id}">${sub.name} (${sub.courseName || 'N/A'} - ${sub.semesterName || 'N/A'})</option>`;
       });
     }
   } catch (err) {
