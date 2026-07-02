@@ -143,6 +143,20 @@ async function loadSubjectSelector() {
   const select = document.getElementById('subjectSelect');
   if (!select) return;
 
+  // Load classes dropdown if present
+  const classSelect = document.getElementById('classSelect');
+  if (classSelect) {
+    try {
+      const classesRes = await api.get('/classes');
+      if (classesRes && classesRes.success) {
+        classSelect.innerHTML = '<option value="" disabled selected>Select Target Class</option>' +
+          classesRes.data.map(cls => `<option value="${cls._id}">${cls.name}</option>`).join('');
+      }
+    } catch (e) {
+      console.error('Failed to load classes for selector:', e);
+    }
+  }
+
   try {
     const data = await api.get('/academic/my-subjects');
     if (data && data.success) {
@@ -159,6 +173,8 @@ async function loadSubjectSelector() {
 async function addQuestion(e) {
   e.preventDefault();
   const subjectId = document.getElementById('subjectSelect').value;
+  const classSelect = document.getElementById('classSelect');
+  const classId = classSelect ? classSelect.value : null;
   const questionText = document.getElementById('questionText').value.trim();
 
   const options = [
@@ -179,18 +195,24 @@ async function addQuestion(e) {
 
   const points = document.getElementById('points').value;
 
+  if (classSelect && !classId) {
+    showToast('Please select a target class.', 'warning');
+    return;
+  }
+
   if (!subjectId || !questionText || options.some(o => !o) || correctAnswer === -1) {
     showToast('Please fill in all options and check the correct answer choice.', 'warning');
     return;
   }
 
   try {
-    const res = await api.post('/questions', { subjectId, questionText, options, correctAnswer, points });
+    const res = await api.post('/questions', { subjectId, classId, questionText, options, correctAnswer, points });
     if (res && res.success) {
       showToast('Question created successfully in bank.', 'success');
       document.getElementById('questionText').value = '';
       options.forEach((opt, idx) => document.getElementById(`opt${idx}`).value = '');
       radioButtons.forEach(rb => rb.checked = false);
+      if (classSelect) classSelect.value = '';
       if (document.getElementById('questions-list')) {
         loadQuestionsTable();
       }

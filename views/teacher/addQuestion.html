@@ -32,12 +32,21 @@
             <div class="erp-card">
               <h5 class="mb-4"><i class="fas fa-question-circle text-primary me-2"></i> Question Composer</h5>
               <form id="add-question-form" onsubmit="addQuestion(event)">
-                <!-- Subject Select -->
-                <div class="mb-3">
-                  <label class="form-label small fw-semibold">Subject / Course Module</label>
-                  <select id="subjectSelect" class="form-control erp-input" required>
-                    <option value="" disabled selected>Loading subjects...</option>
-                  </select>
+                <div class="row">
+                  <!-- Class Select -->
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label small fw-semibold">Target Class</label>
+                    <select id="classSelect" class="form-control erp-input" required>
+                      <option value="" disabled selected>Loading classes...</option>
+                    </select>
+                  </div>
+                  <!-- Subject Select -->
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label small fw-semibold">Subject / Course Module</label>
+                    <select id="subjectSelect" class="form-control erp-input" required>
+                      <option value="" disabled selected>Choose a Subject</option>
+                    </select>
+                  </div>
                 </div>
 
                 <!-- Question Text -->

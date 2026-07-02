@@ -5,7 +5,7 @@ const sendResponse = require('../utils/response');
 
 exports.createQuestion = async (req, res, next) => {
   try {
-    const { subjectId, questionText, options, correctAnswer, points } = req.body;
+    const { subjectId, classId, questionText, options, correctAnswer, points } = req.body;
 
     if (!subjectId || !questionText || !options || correctAnswer === undefined) {
       return sendResponse(res, 400, false, 'Please fill in all required fields.');
@@ -22,7 +22,7 @@ exports.createQuestion = async (req, res, next) => {
 
     const newQuestion = await Question.create({
       subjectId,
-      classId: subject.classId,
+      classId: classId || null,
       teacherId: req.user.id,
       questionText,
       options,
