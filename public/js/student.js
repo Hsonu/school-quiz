@@ -355,7 +355,7 @@ async function loadResultsHistory() {
 
     // Dynamically load Subjects
     try {
-      api.get('/academic/subjects/assigned').then(subjectsRes => {
+      api.get('/academic/my-subjects').then(subjectsRes => {
         const filterSub = document.getElementById('filter-subject');
         if (filterSub && subjectsRes && subjectsRes.success) {
           filterSub.innerHTML = '<option value="">All Subjects</option>' + 
@@ -541,7 +541,7 @@ async function loadStudentNotes() {
     
     // Dynamically load assigned subjects into the subject dropdown
     try {
-      const subRes = await api.get('/academic/subjects/assigned');
+      const subRes = await api.get('/academic/my-subjects');
       const subSelect = document.getElementById('filter-subject');
       if (subRes && subRes.success && subSelect) {
         subSelect.innerHTML = '<option value="">All Subjects</option>' + 
@@ -611,7 +611,7 @@ async function loadStudentAssignments() {
     
     // Dynamically load assigned subjects into the subject dropdown
     try {
-      const subRes = await api.get('/academic/subjects/assigned');
+      const subRes = await api.get('/academic/my-subjects');
       const subSelect = document.getElementById('filter-subject');
       if (subRes && subRes.success && subSelect) {
         subSelect.innerHTML = '<option value="">All Subjects</option>' + 
@@ -765,7 +765,7 @@ async function loadStudentExams() {
     
     // Dynamically load assigned subjects into the subject dropdown
     try {
-      const subRes = await api.get('/academic/subjects/assigned');
+      const subRes = await api.get('/academic/my-subjects');
       const subSelect = document.getElementById('filter-subject');
       if (subRes && subRes.success && subSelect) {
         subSelect.innerHTML = '<option value="">All Subjects</option>' + 
