@@ -27,6 +27,55 @@
           <p class="text-muted small">Access and inspect graded answer sheets of student test submissions.</p>
         </div>
 
+        <!-- Filter Card -->
+        <div class="card mb-4 erp-card p-3 shadow-sm border-0 bg-light text-dark">
+          <div class="row g-3 align-items-end">
+            <!-- Search Text -->
+            <div class="col-md-3">
+              <label class="form-label fw-semibold small text-muted"><i class="fas fa-search me-1"></i> Search</label>
+              <input type="text" id="filter-search" class="form-control form-control-sm"
+                placeholder="Search name, roll no, test...">
+            </div>
+            <!-- Type Filter -->
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small text-muted"><i class="fas fa-file-alt me-1"></i> Type</label>
+              <select id="filter-type" class="form-select form-select-sm">
+                <option value="">All Types</option>
+                <option value="quiz">Quiz</option>
+                <option value="exam">Exam</option>
+              </select>
+            </div>
+            <!-- Subject Filter -->
+            <div class="col-md-3">
+              <label class="form-label fw-semibold small text-muted"><i class="fas fa-book me-1"></i> Subject</label>
+              <select id="filter-subject" class="form-select form-select-sm">
+                <option value="">All Subjects</option>
+              </select>
+            </div>
+            <!-- Status Filter -->
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small text-muted"><i class="fas fa-info-circle me-1"></i> Status</label>
+              <select id="filter-status" class="form-select form-select-sm">
+                <option value="">All Statuses</option>
+                <option value="Pass">Pass</option>
+                <option value="Fail">Fail</option>
+              </select>
+            </div>
+            <!-- Sort By -->
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small text-muted"><i class="fas fa-sort me-1"></i> Sort By</label>
+              <select id="filter-sort" class="form-select form-select-sm">
+                <option value="createdAt-desc">Date (Newest)</option>
+                <option value="createdAt-asc">Date (Oldest)</option>
+                <option value="percentage-desc">Percentage (High-Low)</option>
+                <option value="percentage-asc">Percentage (Low-High)</option>
+                <option value="score-desc">Score (High-Low)</option>
+                <option value="score-asc">Score (Low-High)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div class="erp-card">
           <div class="erp-table-container">
             <table class="erp-table">
@@ -34,7 +83,7 @@
                 <tr>
                   <th>Student Name</th>
                   <th>Roll Number</th>
-                  <th>Subject</th>
+                  <th>Assessment / Subject</th>
                   <th>Total Marks</th>
                   <th>Obtained Marks</th>
                   <th>Pass Marks</th>

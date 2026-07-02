@@ -313,41 +313,135 @@ async function loadStudentsRoster() {
 }
 
 // Results details listing
+let allResultsRoster = [];
+
 async function loadResultsRoster() {
   const container = document.getElementById('results-roster-list');
   if (!container) return;
 
+  // Bind filter listeners once
+  if (!window.resultsFilterBound) {
+    window.resultsFilterBound = true;
+
+    // Dynamically load assigned subjects into the subject dropdown
+    try {
+      const subRes = await api.get('/academic/subjects/assigned');
+      const subSelect = document.getElementById('filter-subject');
+      if (subRes && subRes.success && subSelect) {
+        subSelect.innerHTML = '<option value="">All Subjects</option>' +
+          subRes.data.map(s => `<option value="${s.id || s._id}">${s.name}</option>`).join('');
+      }
+    } catch (e) {
+      console.error('Failed to load assigned subjects:', e);
+    }
+
+    const filters = ['filter-search', 'filter-type', 'filter-subject', 'filter-status', 'filter-sort'];
+    filters.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('change', applyResultsFiltersAndRender);
+        if (el.tagName === 'INPUT') {
+          el.addEventListener('input', debounce(applyResultsFiltersAndRender, 300));
+        }
+      }
+    });
+  }
+
   try {
     const res = await api.get('/results');
     if (res && res.success) {
-      if (res.data.length === 0) {
-        container.innerHTML = '<tr><td colspan="9" class="text-center text-muted">No graded quiz results available yet.</td></tr>';
-      } else {
-        container.innerHTML = res.data.map(r => {
-          const isPass = String(r.status).toLowerCase() === 'pass';
-          const statusBadge = isPass 
-            ? '<span class="badge bg-success fw-bold py-2 px-3">PASS</span>' 
-            : '<span class="badge bg-danger fw-bold py-2 px-3">FAIL</span>';
-
-          return `
-            <tr>
-              <td><strong>${r.studentName}</strong></td>
-              <td><code>${r.rollNo}</code></td>
-              <td>${r.subjectName || 'N/A'}</td>
-              <td>${r.totalMarks}</td>
-              <td class="fw-bold">${r.score}</td>
-              <td>${r.passMarks !== undefined ? r.passMarks : 40}</td>
-              <td>${statusBadge}</td>
-              <td>${r.percentage}%</td>
-              <td>${new Date(r.createdAt).toLocaleDateString()}</td>
-            </tr>
-          `;
-        }).join('');
-      }
+      allResultsRoster = res.data || [];
+      applyResultsFiltersAndRender();
     }
   } catch (err) {
     console.error('Results load error:', err);
     showToast(err.message || 'Failed to load quiz reports.', 'danger');
+  }
+}
+
+function applyResultsFiltersAndRender() {
+  const container = document.getElementById('results-roster-list');
+  if (!container) return;
+
+  const search = document.getElementById('filter-search')?.value.trim().toLowerCase() || '';
+  const type = document.getElementById('filter-type')?.value || '';
+  const subjectId = document.getElementById('filter-subject')?.value || '';
+  const status = document.getElementById('filter-status')?.value || '';
+  const sortVal = document.getElementById('filter-sort')?.value || 'createdAt-desc';
+
+  // Apply filters
+  let filtered = allResultsRoster.filter(r => {
+    // 1. Search text (matches student name, roll number, or assessment title)
+    if (search) {
+      const nameMatch = String(r.studentName || '').toLowerCase().includes(search);
+      const rollMatch = String(r.rollNo || '').toLowerCase().includes(search);
+      const titleMatch = String(r.quizTitle || '').toLowerCase().includes(search);
+      if (!nameMatch && !rollMatch && !titleMatch) return false;
+    }
+
+    // 2. Type filter
+    if (type && String(r.type || '').toLowerCase() !== type.toLowerCase()) return false;
+
+    // 3. Subject filter
+    if (subjectId && String(r.subjectId || '') !== subjectId) return false;
+
+    // 4. Status filter
+    if (status && String(r.status || '').toLowerCase() !== status.toLowerCase()) return false;
+
+    return true;
+  });
+
+  // Apply Sorting
+  const [sortBy, sortOrder] = sortVal.split('-');
+  filtered.sort((a, b) => {
+    let valA = a[sortBy];
+    let valB = b[sortBy];
+
+    if (sortBy === 'createdAt') {
+      valA = new Date(valA || 0);
+      valB = new Date(valB || 0);
+    } else if (sortBy === 'percentage' || sortBy === 'score') {
+      valA = Number(valA || 0);
+      valB = Number(valB || 0);
+    } else {
+      valA = String(valA || '').toLowerCase();
+      valB = String(valB || '').toLowerCase();
+    }
+
+    const orderMultiplier = sortOrder === 'desc' ? -1 : 1;
+    if (valA < valB) return -1 * orderMultiplier;
+    if (valA > valB) return 1 * orderMultiplier;
+    return 0;
+  });
+
+  // Render to DOM
+  if (filtered.length === 0) {
+    container.innerHTML = '<tr><td colspan="9" class="text-center text-muted py-4"><i class="fas fa-search me-1"></i> No matching results found.</td></tr>';
+  } else {
+    container.innerHTML = filtered.map(r => {
+      const isPass = String(r.status).toLowerCase() === 'pass';
+      const statusBadge = isPass 
+        ? '<span class="badge bg-success fw-bold py-1 px-3">PASS</span>' 
+        : '<span class="badge bg-danger fw-bold py-1 px-3">FAIL</span>';
+      
+      const typeBadge = String(r.type).toLowerCase() === 'exam'
+        ? '<span class="badge bg-purple-subtle text-purple border border-purple-subtle fw-semibold me-1 px-2 py-1 small" style="background-color: #f3e8ff; color: #6b21a8; font-size: 0.75rem;">Exam</span>'
+        : '<span class="badge bg-blue-subtle text-blue border border-blue-subtle fw-semibold me-1 px-2 py-1 small" style="background-color: #dbeafe; color: #1e40af; font-size: 0.75rem;">Quiz</span>';
+
+      return `
+        <tr>
+          <td><strong>${r.studentName}</strong></td>
+          <td><code>${r.rollNo}</code></td>
+          <td>${typeBadge} ${r.quizTitle} <div class="text-muted small">${r.subjectName || 'N/A'}</div></td>
+          <td>${r.totalMarks}</td>
+          <td class="fw-bold">${r.score}</td>
+          <td>${r.passMarks !== undefined ? r.passMarks : 40}</td>
+          <td>${statusBadge}</td>
+          <td>${r.percentage}%</td>
+          <td>${new Date(r.createdAt).toLocaleDateString()} ${new Date(r.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+        </tr>
+      `;
+    }).join('');
   }
 }
 
