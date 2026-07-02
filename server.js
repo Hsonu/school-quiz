@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const compression = require('compression');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -11,14 +12,29 @@ const app = express();
 connectDB();
 
 // Middlewares
+app.use(compression()); // Enable Gzip compression
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Cache-Control headers configuration for static assets
+const staticOptions = {
+  maxAge: '1d', // 1 day caching
+  setHeaders: (res, filepath) => {
+    if (filepath.endsWith('.html')) {
+      // Don't cache HTML pages to prevent users from seeing stale views
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    } else {
+      // Cache CSS, JS, fonts, and images for 1 day
+      res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
+    }
+  }
+};
+
 // Serve Static Assets
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/partials', express.static(path.join(__dirname, 'views', 'partials')));
+app.use(express.static(path.join(__dirname, 'public'), staticOptions));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), staticOptions));
+app.use('/partials', express.static(path.join(__dirname, 'views', 'partials'), staticOptions));
 
 // API Routes
 app.use('/api/teachers', require('./routes/teacherRoutes'));
