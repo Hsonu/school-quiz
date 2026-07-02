@@ -171,6 +171,14 @@ const seedData = async () => {
     });
     console.log(`Teacher seeded: ${teacher.email} (Password: 123456)`);
 
+    // Seed Class
+    console.log('Seeding class settings...');
+    const targetClass = await Class.create({
+      name: 'BCA 1st Year (Section A)',
+      teacherId: teacher._id
+    });
+    console.log(`Class seeded: ${targetClass.name}`);
+
     // Map Teacher to Subjects
     console.log('Seeding teacher-subject maps...');
     await TeacherSubject.create({
@@ -205,6 +213,7 @@ const seedData = async () => {
       departmentId: dept._id,
       courseId: course._id,
       semesterId: sem1._id,
+      classId: targetClass._id,
       rollNo: 'RC-2026-007',
       profilePic: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=150&auto=format&fit=crop',
       isActive: true
@@ -237,7 +246,7 @@ const seedData = async () => {
       title: 'Data Structures Midterm Quiz',
       description: 'LIFO stack models and linear queue arrays.',
       subjectId: dsSub._id,
-      classId: 'default',
+      classId: targetClass._id,
       teacherId: teacher._id,
       questions: [q1._id, q2._id],
       duration: 15,
@@ -280,7 +289,7 @@ const seedData = async () => {
       date.setHours(12, 0, 0, 0);
       await Attendance.create({
         studentId: student._id,
-        classId: 'default',
+        classId: targetClass._id,
         date: date,
         status: day === 3 ? 'Absent' : 'Present'
       });
