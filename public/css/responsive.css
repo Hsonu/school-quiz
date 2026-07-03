@@ -8,21 +8,21 @@
     height: 100vh !important;
     box-shadow: 4px 0 15px rgba(0, 0, 0, 0.25);
   }
-  
+
   .sidebar.show {
     transform: translateX(0);
   }
-  
+
   .main-content {
     margin-left: 0 !important;
     margin-top: 70px !important;
     min-height: calc(100vh - 70px) !important;
   }
-  
+
   .sidebar-toggle-btn {
     display: block !important;
   }
-  
+
   .navbar-left .sidebar-toggle-btn {
     margin-right: 12px;
   }
@@ -32,25 +32,25 @@
   .top-navbar {
     padding: 0 16px !important;
   }
-  
+
   .dashboard-body {
     padding: 16px !important;
   }
-  
+
   .date-time-widget {
     display: none !important;
   }
-  
+
   /* Make tables responsive */
   .table-responsive {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch;
   }
-  
+
   .table {
     min-width: 650px;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
@@ -74,13 +74,13 @@
   .erp-card {
     padding: 16px !important;
   }
-  
+
   .navbar-right {
     gap: 12px !important;
   }
 
   /* Make form rows stack on mobile */
-  .row > * {
+  .row>* {
     margin-bottom: 12px;
   }
 }

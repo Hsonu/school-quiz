@@ -125,4 +125,24 @@ app.listen(PORT, () => {
   console.log(`School ERP Portal running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
   console.log(`URL: http://localhost:${PORT}`);
   console.log(`===================================================`);
+
+  // Keep-alive ping mechanism to keep Render free tier service active
+  const https = require('https');
+  const pingUrl = 'https://school-quiz-kdwf.onrender.com/';
+  
+  // Initial ping on start
+  https.get(pingUrl, (res) => {
+    console.log(`Initial keep-alive ping sent to ${pingUrl}. Status: ${res.statusCode}`);
+  }).on('error', (err) => {
+    console.error(`Error in initial keep-alive ping: ${err.message}`);
+  });
+
+  // Set interval to ping every 5 minutes (300,000 ms)
+  setInterval(() => {
+    https.get(pingUrl, (res) => {
+      console.log(`Keep-alive ping sent to ${pingUrl}. Status: ${res.statusCode}`);
+    }).on('error', (err) => {
+      console.error(`Error in keep-alive ping: ${err.message}`);
+    });
+  }, 5 * 60 * 1000);
 });
