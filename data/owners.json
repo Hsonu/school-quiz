@@ -3,9 +3,10 @@
     "_id": "gdint0fha",
     "name": "Nakul Sir",
     "email": "owner@rajcomputer.com",
-    "password": "$2a$10$fVeFDqjFWpY5pyyy7.7IBuYd3BOBod0IQGS9MeHFkrFrOrQfy6aFG",
+    "password": "$2a$10$cTm3sdrGwJso1Xl5ie8CnOGm1e5w86Y19AqhjT7mEWAf1AwifrXpW",
     "role": "owner",
     "createdAt": "2026-06-26T18:01:02.062Z",
-    "updatedAt": "2026-06-26T18:01:02.062Z"
+    "updatedAt": "2026-07-03T17:42:02.316Z",
+    "profilePic": "/uploads/profilePic-1783100521953-309886363.png"
   }
 ]

@@ -1007,3 +1007,60 @@ exports.updatePermissions = async (req, res, next) => {
     next(error);
   }
 };
+
+// 12. Owner own profile get/update
+exports.getProfile = async (req, res, next) => {
+  try {
+    const owner = await Owner.findById(req.user.id);
+    if (!owner) {
+      return sendResponse(res, 404, false, 'Owner not found.');
+    }
+
+    const profile = {
+      id: owner._id,
+      name: owner.name,
+      email: owner.email,
+      profilePic: owner.profilePic || ''
+    };
+
+    return sendResponse(res, 200, true, 'Profile fetched successfully.', profile);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateProfile = async (req, res, next) => {
+  try {
+    const { name, password } = req.body;
+    const updateData = {};
+
+    if (name) updateData.name = name;
+
+    if (password) {
+      if (!validatePassword(password)) {
+        return sendResponse(res, 400, false, 'Password must be at least 6 characters.');
+      }
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
+    }
+
+    if (req.file) {
+      updateData.profilePic = `/uploads/${req.file.filename}`;
+    }
+
+    const updated = await Owner.findByIdAndUpdate(req.user.id, updateData, { new: true });
+    if (!updated) {
+      return sendResponse(res, 404, false, 'Owner not found.');
+    }
+
+    return sendResponse(res, 200, true, 'Profile updated successfully.', {
+      id: updated._id,
+      name: updated.name,
+      email: updated.email,
+      profilePic: updated.profilePic || ''
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+

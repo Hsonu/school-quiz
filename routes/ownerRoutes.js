@@ -3,6 +3,7 @@ const router = express.Router();
 const ownerController = require('../controllers/ownerController');
 const auth = require('../middleware/auth');
 const ownerAuth = require('../middleware/ownerAuth');
+const upload = require('../config/multer');
 
 // Public Owner login
 router.post('/login', ownerController.login);
@@ -57,5 +58,9 @@ router.put('/users/:id/permissions', auth, ownerAuth, ownerController.updatePerm
 
 // Filtered report query
 router.get('/reports', auth, ownerAuth, ownerController.generateReport);
+
+// Profile management
+router.get('/profile', auth, ownerAuth, ownerController.getProfile);
+router.put('/profile', auth, ownerAuth, upload.single('profilePic'), ownerController.updateProfile);
 
 module.exports = router;

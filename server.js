@@ -64,6 +64,7 @@ app.get('/owner/students', (req, res) => res.sendFile(path.join(__dirname, 'view
 app.get('/owner/reports', (req, res) => res.sendFile(path.join(__dirname, 'views', 'owner', 'reports.html')));
 app.get('/owner/principals', (req, res) => res.sendFile(path.join(__dirname, 'views', 'owner', 'principals.html')));
 app.get('/owner/settings', (req, res) => res.sendFile(path.join(__dirname, 'views', 'owner', 'settings.html')));
+app.get('/owner/profile', (req, res) => res.sendFile(path.join(__dirname, 'views', 'owner', 'profile.html')));
 
 // Teacher Subviews
 app.get('/teacher/dashboard', (req, res) => res.sendFile(path.join(__dirname, 'views', 'teacher', 'dashboard.html')));
@@ -129,7 +130,7 @@ app.listen(PORT, () => {
   // Keep-alive ping mechanism to keep Render free tier service active
   const https = require('https');
   const pingUrl = 'https://school-quiz-kdwf.onrender.com/';
-  
+
   // Initial ping on start
   https.get(pingUrl, (res) => {
     console.log(`Initial keep-alive ping sent to ${pingUrl}. Status: ${res.statusCode}`);

@@ -18,6 +18,10 @@ const ownerSchema = {
   role: {
     type: String,
     default: 'owner'
+  },
+  profilePic: {
+    type: String,
+    default: ''
   }
 };
 
